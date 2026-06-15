@@ -1,24 +1,11 @@
-# README
+# Church Statement Manager 
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+A simple church treasury management system for creating monthly Statements of Receipts and Expenditures.
+Made for my mom.
 
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+## Goals
+- Manage chapels
+- Manage signatories
+- Record income and expenses
+- Generate monthly statements
+- Export PDF reports
