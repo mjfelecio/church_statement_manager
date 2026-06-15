@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  chapel: one
+  month: 1
+  year: 1
+  beginning_balance: 9.99
+  ending_balance: 9.99
+  prepared_by: one
+  approved_by: one
+  finalized_at: 2026-06-15 20:56:36
+
+two:
+  chapel: two
+  month: 1
+  year: 1
+  beginning_balance: 9.99
+  ending_balance: 9.99
+  prepared_by: two
+  approved_by: two
+  finalized_at: 2026-06-15 20:56:36
