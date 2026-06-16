@@ -2,4 +2,45 @@ class Statement < ApplicationRecord
   belongs_to :chapel
   belongs_to :prepared_by, class_name: "Person"
   belongs_to :approved_by, class_name: "Person"
+
+  has_many :transactions, dependent: :destroy
+
+  # matches DATE::MONTHNAMES conversion
+  enum :month, {
+      january: 1,
+      february: 2,
+      march: 3,
+      april: 4,
+      may: 5,
+      june: 6,
+      july: 7,
+      august: 8,
+      september: 9,
+      october: 10,
+      november: 11,
+      december: 12
+  }
+
+  validates :year, :month, :chapel_id, presence: true
+
+  validates :month,
+    uniqueness: {
+      scope: [ :year, :chapel_id ],
+      message: "already exists for this chapel and year"
+    }
+
+  validates :year,
+    numericality: {
+      greater_than_or_equal_to: 0
+    }
+
+  validates :beginning_balance,
+    numericality: {
+      greater_than_or_equal_to: 0
+    }
+
+  validates :ending_balance,
+    numericality: {
+      greater_than_or_equal_to: 0
+    }
 end
