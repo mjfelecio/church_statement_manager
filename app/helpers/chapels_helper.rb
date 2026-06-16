@@ -1,0 +1,2 @@
+module ChapelsHelper
+end
