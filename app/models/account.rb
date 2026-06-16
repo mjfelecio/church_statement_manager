@@ -8,4 +8,6 @@ class Account < ApplicationRecord
   }
 
   validates :code, :name, :category, presence: true
+
+  validates :code, uniqueness: true
 end
