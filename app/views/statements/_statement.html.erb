@@ -1,34 +1,37 @@
-<div id="<%= dom_id statement %>" class="w-full sm:w-auto my-5 space-y-5">
-  <div>
-    <strong class="block font-medium mb-1">Chapel:</strong>
-    <%= statement.chapel_id %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">Month:</strong>
-    <%= statement.month %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">Year:</strong>
-    <%= statement.year %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">Beginning balance:</strong>
-    <%= statement.beginning_balance %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">Ending balance:</strong>
-    <%= statement.ending_balance %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">Prepared by:</strong>
-    <%= statement.prepared_by_id %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">Approved by:</strong>
-    <%= statement.approved_by_id %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">Finalized at:</strong>
-    <%= statement.finalized_at %>
+<div id="<%= dom_id statement %>" class="py-4">
+  <div class="flex items-start justify-between gap-4">
+    <div>
+      <h3 class="text-lg font-semibold">
+        <%= statement.chapel.name %>
+      </h3>
+
+      <p class="text-sm text-base-content/70">
+        <%= statement.month.humanize %> <%= statement.year %>
+      </p>
+
+      <div class="mt-2 text-sm text-base-content/70">
+        Prepared by <%= statement.prepared_by.name %>
+      </div>
+
+      <div class="text-sm text-base-content/70">
+        Approved by <%= statement.approved_by.name %>
+      </div>
+    </div>
+
+    <div class="flex flex-col items-end gap-2 shrink-0">
+      <div class="badge badge-outline">
+        <%= statement.finalized_at.present? ? "Finalized" : "Draft" %>
+      </div>
+
+      <div class="text-right">
+        <div class="text-xs uppercase text-base-content/60">
+          Ending Balance
+        </div>
+
+        <div class="font-semibold">
+          ₱<%= number_with_precision(statement.ending_balance, precision: 2, delimiter: ",") %>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

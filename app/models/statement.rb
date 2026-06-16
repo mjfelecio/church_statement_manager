@@ -43,4 +43,16 @@ class Statement < ApplicationRecord
     numericality: {
       greater_than_or_equal_to: 0
     }
+
+  validate :prepared_and_approved_by_must_differ
+
+  private
+
+  def prepared_and_approved_by_must_differ
+    return if prepared_by_id.blank? || approved_by_id.blank?
+
+    if prepared_by_id == approved_by_id
+      errors.add(:approved_by_id, "must be different from prepared by")
+    end
+  end
 end

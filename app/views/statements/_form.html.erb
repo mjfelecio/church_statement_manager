@@ -1,57 +1,122 @@
 <%= form_with(model: statement, class: "contents") do |form| %>
   <% if statement.errors.any? %>
-    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
-      <h2><%= pluralize(statement.errors.count, "error") %> prohibited this statement from being saved:</h2>
+    <div class="alert alert-error mb-6">
+      <div>
+        <h2 class="font-semibold">
+          <%= pluralize(statement.errors.count, "error") %> prohibited this statement from being saved:
+        </h2>
 
-      <ul class="list-disc ml-6">
-        <% statement.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
+        <ul class="list-disc ml-6 mt-2">
+          <% statement.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
     </div>
   <% end %>
 
-  <div class="my-5">
-    <%= form.label :chapel_id %>
-    <%= form.text_field :chapel_id, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": statement.errors[:chapel_id].none?, "border-red-400 focus:outline-red-600": statement.errors[:chapel_id].any?}] %>
-  </div>
+  <div class="space-y-6">
 
-  <div class="my-5">
-    <%= form.label :month %>
-    <%= form.number_field :month, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": statement.errors[:month].none?, "border-red-400 focus:outline-red-600": statement.errors[:month].any?}] %>
-  </div>
+    <!-- Statement Details -->
+    <div class="card bg-base-100 border border-base-300">
+      <div class="card-body">
+        <h2 class="card-title">Statement Details</h2>
 
-  <div class="my-5">
-    <%= form.label :year %>
-    <%= form.number_field :year, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": statement.errors[:year].none?, "border-red-400 focus:outline-red-600": statement.errors[:year].any?}] %>
-  </div>
+        <div class="grid gap-4 md:grid-cols-3">
+          <div class="form-control">
+            <%= form.label :chapel_id, "Chapel", class: "label" %>
+            <%= form.select :chapel_id,
+              chapel_options,
+              {},
+              class: "select select-bordered w-full" %>
+          </div>
 
-  <div class="my-5">
-    <%= form.label :beginning_balance %>
-    <%= form.text_field :beginning_balance, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": statement.errors[:beginning_balance].none?, "border-red-400 focus:outline-red-600": statement.errors[:beginning_balance].any?}] %>
-  </div>
+          <div class="form-control">
+            <%= form.label :month, class: "label" %>
+            <%= form.select :month,
+              month_options,
+              { selected: Statement.months[statement.month] || Date.today.month},
+              class: "select select-bordered w-full" %>
+          </div>
 
-  <div class="my-5">
-    <%= form.label :ending_balance %>
-    <%= form.text_field :ending_balance, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": statement.errors[:ending_balance].none?, "border-red-400 focus:outline-red-600": statement.errors[:ending_balance].any?}] %>
-  </div>
+          <div class="form-control">
+            <%= form.label :year, class: "label" %>
+            <%= form.number_field :year,
+              value: statement.year || Date.today.year,
+              class: "input input-bordered w-full" %>
+          </div>
+        </div>
+      </div>
+    </div>
 
-  <div class="my-5">
-    <%= form.label :prepared_by_id %>
-    <%= form.text_field :prepared_by_id, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": statement.errors[:prepared_by_id].none?, "border-red-400 focus:outline-red-600": statement.errors[:prepared_by_id].any?}] %>
-  </div>
+    <!-- Balances -->
+    <div class="card bg-base-100 border border-base-300">
+      <div class="card-body">
+        <h2 class="card-title">Balances</h2>
 
-  <div class="my-5">
-    <%= form.label :approved_by_id %>
-    <%= form.text_field :approved_by_id, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": statement.errors[:approved_by_id].none?, "border-red-400 focus:outline-red-600": statement.errors[:approved_by_id].any?}] %>
-  </div>
+        <div class="grid gap-4 md:grid-cols-2">
+          <div class="form-control">
+            <%= form.label :beginning_balance, class: "label" %>
+            <%= form.number_field :beginning_balance,
+              step: :any,
+              class: "input input-bordered w-full" %>
+          </div>
 
-  <div class="my-5">
-    <%= form.label :finalized_at %>
-    <%= form.datetime_field :finalized_at, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": statement.errors[:finalized_at].none?, "border-red-400 focus:outline-red-600": statement.errors[:finalized_at].any?}] %>
-  </div>
+          <div class="form-control">
+            <%= form.label :ending_balance, class: "label" %>
+            <%= form.number_field :ending_balance,
+              step: :any,
+              class: "input input-bordered w-full" %>
+          </div>
+        </div>
+      </div>
+    </div>
 
-  <div class="inline">
-    <%= form.submit class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium cursor-pointer" %>
+    <!-- Signatories -->
+    <div class="card bg-base-100 border border-base-300">
+      <div class="card-body">
+        <h2 class="card-title">Signatories</h2>
+
+        <div class="grid gap-4 md:grid-cols-2">
+          <div class="form-control">
+            <%= form.label :prepared_by_id, "Prepared By", class: "label" %>
+            <%= form.select :prepared_by_id,
+              person_options,
+              {},
+              class: "select select-bordered w-full" %>
+          </div>
+
+          <div class="form-control">
+            <%= form.label :approved_by_id, "Approved By", class: "label" %>
+            <%= form.select :approved_by_id,
+              person_options,
+              {},
+              class: "select select-bordered w-full" %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Finalization -->
+    <div class="card bg-base-100 border border-base-300">
+      <div class="card-body">
+        <h2 class="card-title">Finalization</h2>
+
+        <div class="form-control">
+          <%= form.label :finalized_at, class: "label" %>
+          <%= form.datetime_field :finalized_at,
+            class: "input input-bordered w-full" %>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex justify-end gap-2">
+      <%= form.submit class: "btn btn-primary" %>
+
+      <%= link_to "Cancel",
+        statements_path,
+        class: "btn btn-ghost" %>
+    </div>
+
   </div>
 <% end %>
