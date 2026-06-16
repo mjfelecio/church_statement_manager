@@ -2,18 +2,13 @@
 
 one:
   statement: one
-  kind: 1
-  account_code: MyString
-  name: MyString
+  account: one
   description: MyString
   group_name: MyString
   amount: 9.99
 
 two:
   statement: two
-  kind: 1
-  account_code: MyString
-  name: MyString
-  description: MyString
+  account: two
   group_name: MyString
   amount: 9.99

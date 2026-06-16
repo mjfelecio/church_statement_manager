@@ -10,9 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_06_15_125805) do
+ActiveRecord::Schema[8.0].define(version: 2026_06_16_003734) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "accounts", force: :cascade do |t|
+    t.string "code"
+    t.string "name"
+    t.text "description"
+    t.integer "category"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["code"], name: "index_accounts_on_code", unique: true
+  end
 
   create_table "chapels", force: :cascade do |t|
     t.string "name"
@@ -46,19 +56,19 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_15_125805) do
 
   create_table "transactions", force: :cascade do |t|
     t.bigint "statement_id", null: false
-    t.integer "kind"
-    t.string "account_code"
-    t.string "name"
     t.string "description"
     t.string "group_name"
     t.decimal "amount"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "account_id", null: false
+    t.index ["account_id"], name: "index_transactions_on_account_id"
     t.index ["statement_id"], name: "index_transactions_on_statement_id"
   end
 
   add_foreign_key "statements", "chapels"
   add_foreign_key "statements", "people", column: "approved_by_id"
   add_foreign_key "statements", "people", column: "prepared_by_id"
+  add_foreign_key "transactions", "accounts"
   add_foreign_key "transactions", "statements"
 end
