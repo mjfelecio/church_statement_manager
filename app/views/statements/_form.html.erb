@@ -1,0 +1,57 @@
+<%= form_with(model: statement, class: "contents") do |form| %>
+  <% if statement.errors.any? %>
+    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
+      <h2><%= pluralize(statement.errors.count, "error") %> prohibited this statement from being saved:</h2>
+
+      <ul class="list-disc ml-6">
+        <% statement.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="my-5">
+    <%= form.label :chapel_id %>
+    <%= form.text_field :chapel_id, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": statement.errors[:chapel_id].none?, "border-red-400 focus:outline-red-600": statement.errors[:chapel_id].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :month %>
+    <%= form.number_field :month, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": statement.errors[:month].none?, "border-red-400 focus:outline-red-600": statement.errors[:month].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :year %>
+    <%= form.number_field :year, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": statement.errors[:year].none?, "border-red-400 focus:outline-red-600": statement.errors[:year].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :beginning_balance %>
+    <%= form.text_field :beginning_balance, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": statement.errors[:beginning_balance].none?, "border-red-400 focus:outline-red-600": statement.errors[:beginning_balance].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :ending_balance %>
+    <%= form.text_field :ending_balance, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": statement.errors[:ending_balance].none?, "border-red-400 focus:outline-red-600": statement.errors[:ending_balance].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :prepared_by_id %>
+    <%= form.text_field :prepared_by_id, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": statement.errors[:prepared_by_id].none?, "border-red-400 focus:outline-red-600": statement.errors[:prepared_by_id].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :approved_by_id %>
+    <%= form.text_field :approved_by_id, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": statement.errors[:approved_by_id].none?, "border-red-400 focus:outline-red-600": statement.errors[:approved_by_id].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :finalized_at %>
+    <%= form.datetime_field :finalized_at, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": statement.errors[:finalized_at].none?, "border-red-400 focus:outline-red-600": statement.errors[:finalized_at].any?}] %>
+  </div>
+
+  <div class="inline">
+    <%= form.submit class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium cursor-pointer" %>
+  </div>
+<% end %>

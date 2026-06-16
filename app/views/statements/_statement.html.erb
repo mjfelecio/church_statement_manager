@@ -1,0 +1,34 @@
+<div id="<%= dom_id statement %>" class="w-full sm:w-auto my-5 space-y-5">
+  <div>
+    <strong class="block font-medium mb-1">Chapel:</strong>
+    <%= statement.chapel_id %>
+  </div>
+  <div>
+    <strong class="block font-medium mb-1">Month:</strong>
+    <%= statement.month %>
+  </div>
+  <div>
+    <strong class="block font-medium mb-1">Year:</strong>
+    <%= statement.year %>
+  </div>
+  <div>
+    <strong class="block font-medium mb-1">Beginning balance:</strong>
+    <%= statement.beginning_balance %>
+  </div>
+  <div>
+    <strong class="block font-medium mb-1">Ending balance:</strong>
+    <%= statement.ending_balance %>
+  </div>
+  <div>
+    <strong class="block font-medium mb-1">Prepared by:</strong>
+    <%= statement.prepared_by_id %>
+  </div>
+  <div>
+    <strong class="block font-medium mb-1">Approved by:</strong>
+    <%= statement.approved_by_id %>
+  </div>
+  <div>
+    <strong class="block font-medium mb-1">Finalized at:</strong>
+    <%= statement.finalized_at %>
+  </div>
+</div>

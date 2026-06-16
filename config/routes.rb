@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :statements
   resources :people
   resources :accounts
   resources :chapels
