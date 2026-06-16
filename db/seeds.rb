@@ -11,10 +11,11 @@
 # TODO: Split this seeder into multiple seeder files
 # see: https://dev.to/gsgermanok/seeds-on-rails-the-best-way-to-create-and-feed-your-rails-database-1119
 
-treasurer = Person.find_or_create_by!(name: "MARICEL V. FELECIO", position: "BPC TREASURER")
-moderator = Person.find_or_create_by!(name: "RONELIO T. VALLECERA", position: "BPC VICE - MODERATOR")
+treasurer = Person.find_or_create_by!(name: "Maricel V. Felecio", position: "BPC Treasurer")
+vice_moderator = Person.find_or_create_by!(name: "Ronelio T. Vallecera", position: "BPC Vice - Moderator")
+moderator = Person.find_or_create_by!(name: "Felix Dusaran", position: "BPC Moderator")
 
-chapel = Chapel.find_or_create_by!(name: "SAN ROQUE CHAPEL")
+chapel = Chapel.find_or_create_by!(name: "San Roque Chapel", address: "Nangka, Minol, Mabini, Bohol")
 
 statement = Statement.find_or_create_by!(
   chapel: chapel,
@@ -105,7 +106,8 @@ accounts = Account.all.to_a
 
 5.times do
   chapel = Chapel.find_or_create_by!(
-    name: "#{Faker::Address.community.upcase} CHAPEL"
+    name: "#{Faker::Address.community} Chapel",
+    address: "#{Faker::Address.street_address}, #{Faker::Address.city}, #{Faker::Address.state}, #{Faker::Address.country}"
   )
 
   statement = Statement.create!(
@@ -115,7 +117,7 @@ accounts = Account.all.to_a
     beginning_balance: rand(1000.0..10000.0).round(2),
     ending_balance: rand(1000.0..10000.0).round(2),
     prepared_by: treasurer,
-    approved_by: moderator,
+    approved_by: vice_moderator,
     finalized_at: Date.today
   )
 
