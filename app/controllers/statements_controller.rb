@@ -76,7 +76,7 @@ class StatementsController < ApplicationController
           :approved_by_id,
           :finalized_at,
           transactions_attributes: [
-            [ :id, :account_id, :description, :group_name, :amount ]
+            [ :id, :account_id, :description, :group_name, :amount, :_destroy]
           ]
         ]
       )

@@ -1,4 +1,4 @@
-<div class="grid grid-cols-12 gap-2 py-1 items-start">
+<div id="transaction-<%= f.object.id %>" data-transaction-row class="grid grid-cols-12 gap-2 py-1 items-start">
 
   <div class="col-span-3">
     <%= f.select :account_id,
@@ -26,10 +26,14 @@
       class: "input input-bordered w-full" %>
   </div>
 
+  <%= f.hidden_field :_destroy, value: 0 %>
+
   <div class="col-span-1">
     <button
       type="button"
       class="btn btn-square btn-ghost text-error"
+      data-action="transactions#deleteRow"
+      data-transaction-id="<%= f.object.id %>"
     >
       ✕
     </button>
