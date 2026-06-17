@@ -36,5 +36,14 @@ export default class extends Controller {
     }
   }
 
-  connect() {}
+  updateAccountCategory(event) {
+    const category = event.target.selectedOptions[0].dataset.category;
+
+    const amountEl = event.target
+      .closest("[data-transaction-row]")
+      .querySelector("[data-statement-target='amount']");
+
+    amountEl.dataset.category = category;
+    amountEl.dispatchEvent(new Event("change"));
+  }
 }

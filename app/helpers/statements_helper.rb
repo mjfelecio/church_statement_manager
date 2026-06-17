@@ -14,4 +14,23 @@ module StatementsHelper
   def month_options
     Statement.months.map { |k, v| [ k.humanize, k ] }
   end
+
+  def account_options(account_id)
+    options_for_select(
+      Account.all.order(:category, :name).map do |a|
+        [ a.name, a.id,
+          {
+            data: { category: a.category }
+          }
+        ]
+      end,
+      {
+        selected: account_id
+      }
+    )
+  end
+
+  def default_category
+    Account.order(:category, :name).first&.category || "asset"
+  end
 end

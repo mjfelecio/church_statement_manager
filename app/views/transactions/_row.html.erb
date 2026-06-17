@@ -2,9 +2,13 @@
 
   <div class="col-span-3">
     <%= f.select :account_id,
-      Account.all.map { |a| [a.name, a.id] },
-      {},
-      class: "select select-bordered w-full" %>
+      account_options(f.object.account_id),
+      { },
+      class: "select select-bordered w-full",
+      data: {
+        action: "change->transactions#updateAccountCategory",
+        transaction_id: f.object.id
+      } %>
   </div>
 
   <div class="col-span-4">
@@ -23,7 +27,12 @@
     <%= f.number_field :amount,
       step: :any,
       placeholder: "0.00",
-      class: "input input-bordered w-full" %>
+      class: "input input-bordered w-full",
+      data: {
+        statement_target: "amount",
+        category: f.object&.account&.category || default_category,
+        action: "input->statement#recalculateBalance"
+      } %>
   </div>
 
   <%= f.hidden_field :_destroy, value: 0 %>

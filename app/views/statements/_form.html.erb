@@ -1,4 +1,4 @@
-<%= form_with(model: statement, class: "contents") do |form| %>
+<%= form_with(model: statement, class: "contents", data: { controller: "statement" }) do |form| %>
   <% if statement.errors.any? %>
     <div class="alert alert-error mb-6">
       <div>
@@ -57,16 +57,12 @@
         <div class="grid gap-4 md:grid-cols-2">
           <div class="form-control">
             <%= form.label :beginning_balance, class: "label" %>
-            <%= form.number_field :beginning_balance,
-              step: :any,
-              class: "input input-bordered w-full" %>
+            <h4 class="text-xl font-medium">₱ <span data-statement-target="startingBalance"></span></h4>
           </div>
 
           <div class="form-control">
             <%= form.label :ending_balance, class: "label" %>
-            <%= form.number_field :ending_balance,
-              step: :any,
-              class: "input input-bordered w-full" %>
+            <h4 class="text-xl font-medium">₱ <span data-statement-target="endingBalance"></span></h4>
           </div>
         </div>
       </div>
