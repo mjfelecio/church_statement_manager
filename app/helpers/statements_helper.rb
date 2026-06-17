@@ -12,6 +12,6 @@ module StatementsHelper
   end
 
   def month_options
-    Statement.months.map { |k, v| [ k.humanize, v ] }
+    Statement.months.map { |k, v| [ k.humanize, k ] }
   end
 end

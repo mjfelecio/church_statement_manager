@@ -1,0 +1,38 @@
+<div class="grid grid-cols-12 gap-2 py-1 items-start">
+
+  <div class="col-span-3">
+    <%= f.select :account_id,
+      Account.all.map { |a| [a.name, a.id] },
+      {},
+      class: "select select-bordered w-full" %>
+  </div>
+
+  <div class="col-span-4">
+    <%= f.text_field :description,
+      placeholder: "Description",
+      class: "input input-bordered w-full" %>
+  </div>
+
+  <div class="col-span-2">
+    <%= f.text_field :group_name,
+      placeholder: "Group",
+      class: "input input-bordered w-full" %>
+  </div>
+
+  <div class="col-span-2">
+    <%= f.number_field :amount,
+      step: :any,
+      placeholder: "0.00",
+      class: "input input-bordered w-full" %>
+  </div>
+
+  <div class="col-span-1">
+    <button
+      type="button"
+      class="btn btn-square btn-ghost text-error"
+    >
+      ✕
+    </button>
+  </div>
+
+</div>

@@ -5,6 +5,8 @@ class Statement < ApplicationRecord
 
   has_many :transactions, dependent: :destroy
 
+  accepts_nested_attributes_for :transactions, allow_destroy: true, reject_if: :all_blank
+
   # matches DATE::MONTHNAMES conversion
   enum :month, {
       january: 1,

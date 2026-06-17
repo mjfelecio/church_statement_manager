@@ -65,6 +65,20 @@ class StatementsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def statement_params
-      params.expect(statement: [ :chapel_id, :month, :year, :beginning_balance, :ending_balance, :prepared_by_id, :approved_by_id, :finalized_at ])
+      params.expect(
+        statement: [
+          :chapel_id,
+          :month,
+          :year,
+          :beginning_balance,
+          :ending_balance,
+          :prepared_by_id,
+          :approved_by_id,
+          :finalized_at,
+          transactions_attributes: [
+            [ :id, :account_id, :description, :group_name, :amount ]
+          ]
+        ]
+      )
     end
 end
