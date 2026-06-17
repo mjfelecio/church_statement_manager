@@ -86,9 +86,29 @@
             <div class="col-span-1"></div>
           </div>
 
-          <%= form.fields_for :transactions do |transaction_form| %>
-            <%= render "transactions/row", f: transaction_form %>
-          <% end %>
+          <div data-controller="transactions">
+            <!-- Visible rows -->
+            <div data-transactions-target="rows">
+              <%= form.fields_for :transactions do |transaction_form| %>
+                <%= render "transactions/row", f: transaction_form %>
+              <% end %>
+            </div>
+
+            <!-- Row template -->
+            <template data-transactions-target="template">
+              <%= form.fields_for :transactions, Transaction.new, child_index: "NEW_RECORD" do |f| %>
+                <%= render "transactions/row", f: f %>
+              <% end %>
+            </template>
+
+            <button
+              type="button"
+              data-action="transactions#addRow"
+              class="btn btn-dash block px-12 mt-4 mx-auto"
+            >
+              + Add Transaction
+            </button>
+          </div>
         </div>
       </div>
     </div>
