@@ -21,8 +21,6 @@ statement = Statement.find_or_create_by!(
   chapel: chapel,
   month: :january,
   year: 2026,
-  beginning_balance: 2_881.23,
-  ending_balance: 1_322.23,
   prepared_by: treasurer,
   approved_by: moderator,
   finalized_at: Date.today
@@ -114,8 +112,6 @@ accounts = Account.all.to_a
     chapel: chapel,
     month: Statement.months.keys.sample,
     year: 2025,
-    beginning_balance: rand(1000.0..10000.0).round(2),
-    ending_balance: rand(1000.0..10000.0).round(2),
     prepared_by: treasurer,
     approved_by: vice_moderator,
     finalized_at: Date.today

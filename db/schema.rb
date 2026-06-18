@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_06_16_003734) do
+ActiveRecord::Schema[8.0].define(version: 2026_06_18_120651) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -42,8 +42,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_16_003734) do
     t.bigint "chapel_id", null: false
     t.integer "month"
     t.integer "year"
-    t.decimal "beginning_balance"
-    t.decimal "ending_balance"
     t.bigint "prepared_by_id", null: false
     t.bigint "approved_by_id", null: false
     t.datetime "finalized_at"

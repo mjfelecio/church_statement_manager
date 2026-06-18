@@ -36,17 +36,20 @@ class Statement < ApplicationRecord
       greater_than_or_equal_to: 0
     }
 
-  validates :beginning_balance,
-    numericality: {
-      greater_than_or_equal_to: 0
-    }
-
-  validates :ending_balance,
-    numericality: {
-      greater_than_or_equal_to: 0
-    }
-
   validate :prepared_and_approved_by_must_differ
+
+  def beginning_balance
+    transactions.joins(:account).where(account: { category: :asset }).sum(:amount) || 0
+  end
+
+  def ending_balance
+    assets = transactions.joins(:account).where(account: { category: :asset }).sum(:amount) || 0
+
+    incomes = transactions.joins(:account).where(account: { category: :income }).sum(:amount) || 0
+    expenses = transactions.joins(:account).where(account: { category: :expense }).sum(:amount) || 0
+
+    assets + incomes - expenses
+  end
 
   private
 
