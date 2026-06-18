@@ -35,7 +35,7 @@
             <%= form.label :month, class: "label" %>
             <%= form.select :month,
               month_options,
-              { selected: Statement.months[statement.month] || Date.today.month},
+              { selected: statement.month || Date.today.month},
               class: "select select-bordered w-full" %>
           </div>
 
