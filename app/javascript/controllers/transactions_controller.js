@@ -20,19 +20,20 @@ export default class extends Controller {
 
     const transactionId = event.target.dataset.transactionId;
 
+    const row = event.target.closest("[data-transaction-row]");
+    const amountEl = row.querySelector("[data-statement-target='amount']");
+
+    // Remove any existing value and dispatch an input event to recalculate the balance
+    amountEl.value = 0;
+    amountEl.dispatchEvent(new Event("input"));
+
     // If there is a transactionId, find and remove the specific row
     // and mark it as destroyed, then remove it from the DOM
     if (transactionId) {
-      const row = this.rowsTarget.querySelector(
-        `#transaction-${transactionId}`,
-      );
-
       row.querySelector("[name*='_destroy']").value = 1;
       row.style.display = "none";
-    }
-    // Otherwise, remove the closest row
-    else {
-      event.target.closest("[data-transaction-row]").remove();
+    } else {
+      row.remove();
     }
   }
 
@@ -44,6 +45,6 @@ export default class extends Controller {
       .querySelector("[data-statement-target='amount']");
 
     amountEl.dataset.category = category;
-    amountEl.dispatchEvent(new Event("change"));
+    amountEl.dispatchEvent(new Event("input"));
   }
 }
