@@ -37,6 +37,7 @@ class Statement < ApplicationRecord
     }
 
   validate :prepared_and_approved_by_must_differ
+  validate :cannot_be_edited_when_finalized
 
   def beginning_balance
     transactions.joins(:account).where(account: { category: :asset }).sum(:amount) || 0
@@ -51,6 +52,14 @@ class Statement < ApplicationRecord
     assets + incomes - expenses
   end
 
+  def is_finalized?
+    finalized_at.present?
+  end
+
+  def finalize!
+    update_columns(finalized_at: DateTime.current)
+  end
+
   private
 
   def prepared_and_approved_by_must_differ
@@ -59,5 +68,11 @@ class Statement < ApplicationRecord
     if prepared_by_id == approved_by_id
       errors.add(:approved_by_id, "must be different from prepared by")
     end
+  end
+
+  def cannot_be_edited_when_finalized
+    return unless is_finalized?
+
+    errors.add(:base, "Statement is finalized and cannot be edited.")
   end
 end

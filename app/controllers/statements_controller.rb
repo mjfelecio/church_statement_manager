@@ -1,5 +1,5 @@
 class StatementsController < ApplicationController
-  before_action :set_statement, only: %i[ show edit update destroy ]
+  before_action :set_statement, only: %i[ show edit update destroy finalize ]
 
   # GET /statements or /statements.json
   def index
@@ -17,6 +17,7 @@ class StatementsController < ApplicationController
 
   # GET /statements/1/edit
   def edit
+    redirect_to @statement, notice: "Statement is finalized and cannot be edited." if @statement.is_finalized?
   end
 
   # POST /statements or /statements.json
@@ -54,6 +55,17 @@ class StatementsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to statements_path, notice: "Statement was successfully destroyed.", status: :see_other }
       format.json { head :no_content }
+    end
+  end
+
+  def finalize
+    if @statement.finalize!
+      redirect_to @statement,
+        notice: "Statement was successfully finalized.",
+        status: :see_other
+    else
+      redirect_to edit_statement_path(@statement),
+        alert: "Unable to finalize statement."
     end
   end
 

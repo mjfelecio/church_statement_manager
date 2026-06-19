@@ -135,14 +135,40 @@
     </div>
 
     <!-- Finalization -->
-    <div class="card bg-base-100 border border-base-300">
+    <div class="card card-border border-error bg-error/5">
       <div class="card-body">
-        <h2 class="card-title">Finalization</h2>
+        <h2 class="card-title text-error">
+          Finalize Statement
+        </h2>
 
-        <div class="form-control">
-          <%= form.label :finalized_at, class: "label" %>
-          <%= form.datetime_field :finalized_at,
-            class: "input input-bordered w-full" %>
+        <p class="text-sm text-base-content/80">
+          Finalizing this statement marks it as officially reviewed and approved.
+          Once finalized, the statement and its transactions can no longer be
+          modified. Any corrections or missing transactions must be recorded in a
+          future month's statement.
+        </p>
+
+        <div class="alert alert-soft alert-warning border-warning mt-2">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-alert-triangle">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M12 9v4" />
+            <path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0" />
+            <path d="M12 16h.01" />
+          </svg>
+          <span>
+            Ensure all balances, transactions, and signatories have been reviewed
+            before finalizing.
+          </span>
+        </div>
+
+        <div class="card-actions justify-end mt-4">
+          <%= link_to "Finalize Statement",
+            finalize_statement_path(statement),
+            data: {
+              turbo_method: :patch,
+              turbo_confirm: "Are you sure you want to finalize this statement?\n\nOnce finalized, the statement and its transactions can no longer be edited."
+            },
+            class: "btn btn-error" %>
         </div>
       </div>
     </div>
