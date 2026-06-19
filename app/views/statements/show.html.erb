@@ -1,15 +1,142 @@
 <% content_for :title, "Showing statement" %>
 
-<div class="md:w-2/3 w-full center-page">
+<div class="md:w-2/3 space-y-6 w-full center-page">
   <% if notice.present? %>
-    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
+    <p class="w-full py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
   <% end %>
 
-  <h1 class="font-bold text-4xl">Showing statement</h1>
+  <!-- Statement Details -->
+  <div class="card bg-base-100 border border-base-300">
+    <div class="card-body">
+      <h2 class="card-title">Statement Details</h2>
 
-  <%= render @statement %>
+      <div class="grid gap-4 md:grid-cols-3">
+        <div>
+          <div class="label">Chapel</div>
+          <div class="font-medium"><%= @statement.chapel.name %></div>
+        </div>
 
-  <%= link_to "Edit this statement", edit_statement_path(@statement), class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-  <%= link_to "Back to statements", statements_path, class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-  <%= button_to "Destroy this statement", @statement, method: :delete, form_class: "sm:inline-block mt-2 sm:mt-0 sm:ml-2", class: "w-full rounded-md px-3.5 py-2.5 text-white bg-red-600 hover:bg-red-500 font-medium cursor-pointer", data: { turbo_confirm: "Are you sure?" } %>
+        <div>
+          <div class="label">Month</div>
+          <div class="font-medium"><%= @statement.month.humanize %></div>
+        </div>
+
+        <div>
+          <div class="label">Year</div>
+          <div class="font-medium"><%= @statement.year %></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Balances -->
+  <div class="card bg-base-100 border border-base-300">
+    <div class="card-body">
+      <h2 class="card-title">Balances</h2>
+
+      <div class="grid gap-4 md:grid-cols-2">
+        <div>
+          <div class="label">Beginning Balance</div>
+          <div class="text-xl font-medium">
+            ₱ <%= number_with_precision(@statement.beginning_balance, precision: 2) %>
+          </div>
+        </div>
+
+        <div>
+          <div class="label">Ending Balance</div>
+          <div class="text-xl font-medium">
+            ₱ <%= number_with_precision(@statement.ending_balance, precision: 2) %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Transactions -->
+  <div class="card bg-base-100 border border-base-300">
+    <div class="card-body">
+      <h2 class="card-title">Transactions</h2>
+
+      <div class="overflow-x-auto">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Account</th>
+              <th>Description</th>
+              <th>Group</th>
+              <th class="text-right">Amount</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <% @statement.transactions.each do |transaction| %>
+              <tr>
+                <td><%= transaction.account.name %></td>
+                <td><%= transaction.description.presence || "-" %></td>
+                <td><%= transaction.group_name.presence || "-" %></td>
+                <td class="text-right">
+                  ₱ <%= number_with_precision(transaction.amount, precision: 2) %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Signatories -->
+  <div class="card bg-base-100 border border-base-300">
+    <div class="card-body">
+      <h2 class="card-title">Signatories</h2>
+
+      <div class="grid gap-4 md:grid-cols-2">
+        <div>
+          <div class="label">Prepared By</div>
+          <div class="font-medium">
+            <%= @statement.prepared_by.name %>
+          </div>
+        </div>
+
+        <div>
+          <div class="label">Approved By</div>
+          <div class="font-medium">
+            <%= @statement.approved_by.name %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Status -->
+  <div class="card bg-base-100 border border-base-300">
+    <div class="card-body">
+      <h2 class="card-title">Status</h2>
+
+      <% if @statement.is_finalized? %>
+        <div class="alert">
+          Finalized on
+          <strong>
+            <%= @statement.finalized_at.strftime("%B %d, %Y %I:%M %p") %>
+          </strong>
+        </div>
+      <% else %>
+        <div class="alert alert-outline alert-warning">
+          This statement has not yet been finalized.
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="flex justify-end gap-2">
+    <% unless @statement.is_finalized? %>
+      <%= link_to "Edit",
+        edit_statement_path(@statement),
+        class: "btn btn-primary" %>
+    <% end %>
+
+    <%= link_to "Back",
+      statements_path,
+      class: "btn btn-outline" %>
+  </div>
 </div>

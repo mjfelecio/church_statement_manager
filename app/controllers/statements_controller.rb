@@ -70,9 +70,8 @@ class StatementsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_statement
-      @statement = Statement.find(params.expect(:id))
+      @statement = Statement.includes(transactions: :account).find(params.expect(:id))
     end
 
     # Only allow a list of trusted parameters through.
