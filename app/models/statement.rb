@@ -23,6 +23,8 @@ class Statement < ApplicationRecord
       december: 12
   }
 
+
+
   validates :year, :month, :chapel_id, presence: true
 
   validates :month,
@@ -39,18 +41,40 @@ class Statement < ApplicationRecord
   validate :prepared_and_approved_by_must_differ
   validate :cannot_be_edited_when_finalized
 
+  def income_transactions
+    transactions.joins(:account).where(account: { category: :income })
+  end
+
+  def expense_transactions
+    transactions.joins(:account).where(account: { category: :expense })
+  end
+
+  def total_income
+    income_transactions.sum(:amount) || 0
+  end
+
+  def total_expenses
+    expense_transactions.sum(:amount) || 0
+  end
+
+  # This is the amount of cash we have at the beginning of the month plus the total income
+  # It represents the amount of cash we have available to spend this month
+  def available_funds
+    beginning_balance + total_income
+  end
+
+  # This is the amount of cash we have at the beginning of the month
   def beginning_balance
     transactions.joins(:account).where(account: { category: :asset }).sum(:amount) || 0
   end
 
+  # This is the amount of cash we have at the end of the month after accounting for income and expenses
   def ending_balance
     assets = transactions.joins(:account).where(account: { category: :asset }).sum(:amount) || 0
 
-    incomes = transactions.joins(:account).where(account: { category: :income }).sum(:amount) || 0
-    expenses = transactions.joins(:account).where(account: { category: :expense }).sum(:amount) || 0
-
-    assets + incomes - expenses
+    assets + total_income - total_expenses
   end
+
 
   def is_finalized?
     finalized_at.present?

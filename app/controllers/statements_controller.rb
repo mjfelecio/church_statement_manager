@@ -1,5 +1,5 @@
 class StatementsController < ApplicationController
-  before_action :set_statement, only: %i[ show edit update destroy finalize ]
+  before_action :set_statement, only: %i[ show edit update destroy finalize print ]
 
   # GET /statements or /statements.json
   def index
@@ -67,6 +67,9 @@ class StatementsController < ApplicationController
       redirect_to edit_statement_path(@statement),
         alert: "Unable to finalize statement."
     end
+  end
+
+  def print
   end
 
   private

@@ -1,0 +1,54 @@
+<% last_transaction = transactions.last %>
+
+<table class="w-full">
+  <colgroup>
+    <col>
+    <col class="w-12">
+    <col class="w-28">
+    <col class="w-24">
+  </colgroup>
+
+  <% transactions
+    .group_by(&:group_name)
+    .sort_by { |group_name, _| group_name.present? ? 1 : 0 }
+    .each do |group_name, grouped_transactions| %>
+
+    <% if group_name.present? %>
+      <tr>
+        <td class="pl-4">
+          <%= group_name %>
+        </td>
+
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+    <% end %>
+
+    <% grouped_transactions.each do |transaction| %>
+      <tr>
+        <td class="<%= group_name.present? ? 'pl-8' : 'pl-4' %>">
+          <%= transaction.account.name %>
+        </td>
+
+        <td class="text-right">
+          <%= transaction.account.code %>
+        </td>
+
+        <td
+          class="
+            text-right
+            underline-offset-4
+            <%= 'underline' if transaction == last_transaction %>
+          "
+        >
+          <%= number_to_currency(transaction.amount, unit: "₱") %>
+        </td>
+
+        <!-- padding column -->
+        <td></td>
+      </tr>
+    <% end %>
+
+  <% end %>
+</table>

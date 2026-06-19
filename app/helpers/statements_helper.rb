@@ -33,4 +33,8 @@ module StatementsHelper
   def default_category
     Account.order(:category, :name).first&.category || "asset"
   end
+
+  def last_day_of_month_of_statement(statement)
+    Date.new(statement.year, Statement.months[statement.month], -1).strftime("%B %-d, %Y")
+  end
 end

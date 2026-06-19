@@ -2,6 +2,10 @@ class Transaction < ApplicationRecord
   belongs_to :statement
   belongs_to :account
 
+  before_validation do
+    self.group_name = nil if group_name.blank?
+  end
+
   validates :amount,
     presence: true,
     numericality: {
