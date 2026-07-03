@@ -3,6 +3,7 @@ class CreateAccounts < ActiveRecord::Migration[8.0]
     create_table :accounts do |t|
       t.string :code, index: { unique: true }
       t.string :name
+      t.string :group
       t.text :description
       t.integer :category
 

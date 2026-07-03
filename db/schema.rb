@@ -17,6 +17,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_16_003608) do
   create_table "accounts", force: :cascade do |t|
     t.string "code"
     t.string "name"
+    t.string "group"
     t.text "description"
     t.integer "category"
     t.datetime "created_at", null: false

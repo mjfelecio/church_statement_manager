@@ -1,13 +1,15 @@
 <div id="<%= dom_id account %>" class="py-4">
-  <div class="flex items-start justify-between gap-4">
-    <div>
+  <div class="flex items-center justify-between gap-4">
+    <div class="flex">
+      <% if account.group.present? %>
+        <h3 class="text-lg text-success font-semibold">
+          [<%= account.group %>]
+        </h3>
+      <% end %>
+
       <h3 class="text-lg font-semibold">
         <%= account.name %>
       </h3>
-
-        <p class="text-sm text-base-content/70 mt-1">
-          <%= account.description %>
-        </p>
     </div>
 
     <div class="flex gap-2 shrink-0">

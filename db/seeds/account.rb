@@ -91,27 +91,32 @@ Account.find_or_create_by!(code: "508") do |a|
 end
 
 Account.find_or_create_by!(code: "509") do |a|
-  a.name = "Repair & Maintenance - Land Improvement"
+  a.name = "Land Improvement"
+  a.group = "Repair & Maintenance"
   a.category = :expense
 end
 
 Account.find_or_create_by!(code: "510") do |a|
-  a.name = "Repair & Maintenance - Building"
+  a.name = "Building"
+  a.group = "Repair & Maintenance"
   a.category = :expense
 end
 
 Account.find_or_create_by!(code: "511") do |a|
-  a.name = "Repair & Maintenance - Equipment"
+  a.name = "Equipment"
+  a.group = "Repair & Maintenance"
   a.category = :expense
 end
 
 Account.find_or_create_by!(code: "512") do |a|
-  a.name = "Remittance - Mass Scheduled"
+  a.name = "Mass Scheduled"
+  a.group = "Remittance"
   a.category = :expense
 end
 
 Account.find_or_create_by!(code: "512-A") do |a|
-  a.name = "Remittance - My Care My Share"
+  a.name = "My Care My Share"
+  a.group = "Remittance"
   a.category = :expense
 end
 
