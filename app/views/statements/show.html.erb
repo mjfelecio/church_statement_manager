@@ -57,31 +57,86 @@
     <div class="card-body">
       <h2 class="card-title">Transactions</h2>
 
-      <div class="overflow-x-auto">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Account</th>
-              <th>Description</th>
-              <th>Group</th>
-              <th class="text-right">Amount</th>
-            </tr>
-          </thead>
+      <!-- Income -->
+      <div>
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-lg font-semibold">Income</h3>
+        </div>
 
-          <tbody>
-            <% @statement.transactions.each do |transaction| %>
+        <div class="overflow-x-auto">
+          <table class="table">
+            <thead>
               <tr>
-                <td><%= transaction.account.name %></td>
-                <td><%= transaction.description.presence || "-" %></td>
-                <td><%= transaction.group_name.presence || "-" %></td>
-                <td class="text-right">
-                  ₱ <%= number_with_precision(transaction.amount, precision: 2) %>
-                </td>
+                <th>Account</th>
+                <th>Description</th>
+                <th>Group</th>
+                <th class="text-right">Amount</th>
               </tr>
-            <% end %>
-          </tbody>
-        </table>
+            </thead>
+
+            <tbody>
+              <% @statement.income_transactions.each do |transaction| %>
+                <tr>
+                  <td>
+                    <div class="flex items-center gap-2">
+                      <span><%= transaction.account.name %></span>
+                    </div>
+                  </td>
+
+                  <td><%= transaction.description.presence || "-" %></td>
+                  <td><%= transaction.group_name.presence || "-" %></td>
+
+                  <td class="text-right">
+                    ₱ <%= number_with_precision(transaction.amount, precision: 2) %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
       </div>
+
+      <div class="divider"></div>
+
+      <!-- Expenses -->
+      <div>
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-lg font-semibold">Expenses</h3>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Account</th>
+                <th>Description</th>
+                <th>Group</th>
+                <th class="text-right">Amount</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <% @statement.expense_transactions.each do |transaction| %>
+                <tr>
+                  <td>
+                    <div class="flex items-center gap-2">
+                      <span><%= transaction.account.name %></span>
+                    </div>
+                  </td>
+
+                  <td><%= transaction.description.presence || "-" %></td>
+                  <td><%= transaction.group_name.presence || "-" %></td>
+
+                  <td class="text-right">
+                    ₱ <%= number_with_precision(transaction.amount, precision: 2) %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
     </div>
   </div>
 

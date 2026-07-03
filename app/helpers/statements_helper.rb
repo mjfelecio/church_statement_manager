@@ -12,23 +12,13 @@ module StatementsHelper
     )
   end
 
-  def account_options(account_id)
-    options_for_select(
-      Account.all.order(:category, :name).map do |a|
-        [ a.name, a.id,
-          {
-            data: { category: a.category }
-          }
-        ]
-      end,
-      {
-        selected: account_id
-      }
+  def account_options(account_id, category)
+    options_from_collection_for_select(
+      Account.where(category: category).order(:name),
+      :id,
+      :name,
+      account_id
     )
-  end
-
-  def default_category
-    Account.order(:category, :name).first&.category || "income"
   end
 
   def last_day_of_month_of_statement(statement)

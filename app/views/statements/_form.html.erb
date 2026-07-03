@@ -91,38 +91,93 @@
       <div class="card-body">
         <h2 class="card-title">Transactions</h2>
 
-        <div class="overflow-x-auto">
-          <div class="grid grid-cols-12 gap-2 font-semibold text-sm border-b pb-2 mb-2">
-            <div class="col-span-3">Account</div>
-            <div class="col-span-4">Description</div>
-            <div class="col-span-2">Group</div>
-            <div class="col-span-2">Amount</div>
-            <div class="col-span-1"></div>
-          </div>
+        <div data-controller="transactions">
 
-          <div data-controller="transactions">
-            <!-- Visible rows -->
-            <div data-transactions-target="rows">
-              <%= form.fields_for :transactions do |transaction_form| %>
-                <%= render "transactions/row", f: transaction_form %>
-              <% end %>
+          <!-- ========================= -->
+          <!-- Income -->
+          <!-- ========================= -->
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-semibold">Income</h3>
+
+              <button
+                type="button"
+                data-action="transactions#addIncomeRow"
+                class="btn btn-dash"
+              >
+                + Add Income
+              </button>
             </div>
 
-            <!-- Row template -->
-            <template data-transactions-target="template">
-              <%= form.fields_for :transactions, Transaction.new, child_index: "NEW_RECORD" do |f| %>
-                <%= render "transactions/row", f: f %>
-              <% end %>
-            </template>
+            <div class="overflow-x-auto">
+              <div class="grid grid-cols-12 gap-2 font-semibold text-sm border-b pb-2 mb-2">
+                <div class="col-span-3">Account</div>
+                <div class="col-span-4">Description</div>
+                <div class="col-span-2">Group</div>
+                <div class="col-span-2">Amount</div>
+                <div class="col-span-1"></div>
+              </div>
 
-            <button
-              type="button"
-              data-action="transactions#addRow"
-              class="btn btn-dash block px-12 mt-4 mx-auto"
-            >
-              + Add Transaction
-            </button>
+              <div data-transactions-target="incomeRows">
+                <%= form.fields_for :transactions do |transaction_form| %>
+                  <% if transaction_form.object.account&.income? || transaction_form.object.new_record? %>
+                    <%= render "transactions/row", f: transaction_form, category: :income %>
+                  <% end %>
+                <% end %>
+              </div>
+            </div>
           </div>
+
+          <div class="divider"></div>
+
+          <!-- ========================= -->
+          <!-- Expenses -->
+          <!-- ========================= -->
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-semibold">Expenses</h3>
+
+              <button
+                type="button"
+                data-action="transactions#addExpenseRow"
+                class="btn btn-dash"
+              >
+                + Add Expense
+              </button>
+            </div>
+
+            <div class="overflow-x-auto">
+              <div class="grid grid-cols-12 gap-2 font-semibold text-sm border-b pb-2 mb-2">
+                <div class="col-span-3">Account</div>
+                <div class="col-span-4">Description</div>
+                <div class="col-span-2">Group</div>
+                <div class="col-span-2">Amount</div>
+                <div class="col-span-1"></div>
+              </div>
+
+              <div data-transactions-target="expenseRows">
+                <%= form.fields_for :transactions do |transaction_form| %>
+                  <% if transaction_form.object.account&.expense? %>
+                    <%= render "transactions/row", f: transaction_form, category: :expense %>
+                  <% end %>
+                <% end %>
+              </div>
+            </div>
+          </div>
+
+          <!-- Templates -->
+          <template data-transactions-target="incomeTemplate">
+            <%= form.fields_for :transactions, Transaction.new, child_index: "NEW_RECORD" do |f| %>
+              <%= render "transactions/row", f: f, category: :income %>
+            <% end %>
+          </template>
+
+          <template data-transactions-target="expenseTemplate">
+            <%= form.fields_for :transactions, Transaction.new, child_index: "NEW_RECORD" do |f| %>
+              <%= render "transactions/row", f: f, category: :expense %>
+            <% end %>
+          </template>
+
         </div>
       </div>
     </div>

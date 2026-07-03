@@ -2,7 +2,7 @@
 
   <div class="col-span-3">
     <%= f.select :account_id,
-      account_options(f.object.account_id),
+      account_options(f.object.account_id, category),
       { },
       class: "select select-bordered w-full",
       data: {
@@ -30,7 +30,7 @@
       class: "input input-bordered w-full",
       data: {
         statement_target: "amount",
-        category: f.object&.account&.category || default_category,
+        category: category,
         action: "input->statement#recalculateBalance"
       } %>
   </div>
