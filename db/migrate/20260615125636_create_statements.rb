@@ -3,6 +3,7 @@ class CreateStatements < ActiveRecord::Migration[8.0]
     create_table :statements do |t|
       t.integer :month
       t.integer :year
+      t.decimal :initial_balance
       t.references :prepared_by, null: false, foreign_key: { to_table: :people }
       t.references :approved_by, null: false, foreign_key: { to_table: :people }
       t.datetime :finalized_at

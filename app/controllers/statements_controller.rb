@@ -85,7 +85,7 @@ class StatementsController < ApplicationController
           :year,
           :prepared_by_id,
           :approved_by_id,
-          :finalized_at,
+          :initial_balance,
           transactions_attributes: [
             [ :id, :account_id, :description, :group_name, :amount, :_destroy ]
           ]

@@ -3,8 +3,13 @@ module StatementsHelper
     Person.all.map { |person| [ person.name, person.id ] }
   end
 
-  def month_options
-    Statement.months.map { |k, v| [ k.humanize, k ] }
+  def month_options(statement_month)
+    options_for_select(
+      Statement.months.map { |k, v| [ k.humanize, k ] },
+      {
+        selected: statement_month || Date::MONTHNAMES[Date.today.month].downcase
+      }
+    )
   end
 
   def account_options(account_id)
@@ -23,7 +28,7 @@ module StatementsHelper
   end
 
   def default_category
-    Account.order(:category, :name).first&.category || "asset"
+    Account.order(:category, :name).first&.category || "income"
   end
 
   def last_day_of_month_of_statement(statement)

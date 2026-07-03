@@ -26,8 +26,8 @@
           <div class="form-control">
             <%= form.label :month, class: "label" %>
             <%= form.select :month,
-              month_options,
-              { selected: statement.month || Date.today.month},
+              month_options(statement.month),
+              {},
               class: "select select-bordered w-full" %>
           </div>
 
@@ -49,14 +49,40 @@
         <div class="grid gap-4 md:grid-cols-2">
           <div class="form-control">
             <%= form.label :beginning_balance, class: "label" %>
-            <h4 class="text-xl font-medium">₱ <span data-statement-target="startingBalance"></span></h4>
+            <h4 class="text-xl font-medium">₱
+              <span data-statement-target="startingBalance">
+                <%= statement.beginning_balance %>
+              </span>
+            </h4>
           </div>
 
           <div class="form-control">
             <%= form.label :ending_balance, class: "label" %>
-            <h4 class="text-xl font-medium">₱ <span data-statement-target="endingBalance"></span></h4>
+            <h4 class="text-xl font-medium">₱
+              <span data-statement-target="endingBalance">
+                <%= statement.ending_balance %>
+              </span>
+            </h4>
           </div>
         </div>
+
+        <% unless statement.initial_balance_statement_present? %>
+          <div class="divider"></div>
+          <%= form.label :initial_balance, class: "label" %>
+          <%= form.number_field :initial_balance,
+            value: statement.initial_balance,
+            class: "input input-bordered w-full",
+            data: {
+              statement_target: "initialBalance",
+              action: "input->statement#recalculateBalance"
+            }
+            %>
+          <p class=" text-amber-800">
+            This should only be entered once when creating the first statement.
+            After a statement is finalized, its ending balance becomes the
+            initial / beginning balance of the next statement automatically.
+          </p>
+        <% end %>
       </div>
     </div>
 
@@ -127,43 +153,45 @@
     </div>
 
     <!-- Finalization -->
-    <div class="card card-border border-error bg-error/5">
-      <div class="card-body">
-        <h2 class="card-title text-error">
-          Finalize Statement
-        </h2>
+    <% if statement.persisted? %>
+      <div class="card card-border border-error bg-error/5">
+        <div class="card-body">
+          <h2 class="card-title text-error">
+            Finalize Statement
+          </h2>
 
-        <p class="text-sm text-base-content/80">
-          Finalizing this statement marks it as officially reviewed and approved.
-          Once finalized, the statement and its transactions can no longer be
-          modified. Any corrections or missing transactions must be recorded in a
-          future month's statement.
-        </p>
+          <p class="text-sm text-base-content/80">
+            Finalizing this statement marks it as officially reviewed and approved.
+            Once finalized, the statement and its transactions can no longer be
+            modified. Any corrections or missing transactions must be recorded in a
+            future month's statement.
+          </p>
 
-        <div class="alert alert-soft alert-warning border-warning mt-2">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-alert-triangle">
-            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-            <path d="M12 9v4" />
-            <path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0" />
-            <path d="M12 16h.01" />
-          </svg>
-          <span>
-            Ensure all balances, transactions, and signatories have been reviewed
-            before finalizing.
-          </span>
-        </div>
+          <div class="alert alert-soft alert-warning border-warning mt-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-alert-triangle">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M12 9v4" />
+              <path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0" />
+              <path d="M12 16h.01" />
+            </svg>
+            <span>
+              Ensure all balances, transactions, and signatories have been reviewed
+              before finalizing.
+            </span>
+          </div>
 
-        <div class="card-actions justify-end mt-4">
-          <%= link_to "Finalize Statement",
-            finalize_statement_path(statement),
-            data: {
-              turbo_method: :patch,
-              turbo_confirm: "Are you sure you want to finalize this statement?\n\nOnce finalized, the statement and its transactions can no longer be edited."
-            },
-            class: "btn btn-error" %>
+          <div class="card-actions justify-end mt-4">
+            <%= link_to "Finalize Statement",
+              finalize_statement_path(statement),
+              data: {
+                turbo_method: :patch,
+                turbo_confirm: "Are you sure you want to finalize this statement?\n\nOnce finalized, the statement and its transactions can no longer be edited."
+              },
+              class: "btn btn-error" %>
+          </div>
         </div>
       </div>
-    </div>
+    <% end %>
 
     <div class="flex justify-end gap-2">
       <%= form.submit class: "btn btn-primary" %>

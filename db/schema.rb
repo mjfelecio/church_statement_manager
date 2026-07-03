@@ -34,6 +34,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_16_003608) do
   create_table "statements", force: :cascade do |t|
     t.integer "month"
     t.integer "year"
+    t.decimal "initial_balance"
     t.bigint "prepared_by_id", null: false
     t.bigint "approved_by_id", null: false
     t.datetime "finalized_at"

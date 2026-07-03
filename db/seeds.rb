@@ -18,9 +18,10 @@ moderator = Person.find_or_create_by!(name: "Felix Dusaran", position: "BPC Mode
 statement = Statement.find_or_create_by!(
   month: :january,
   year: 2026,
+  initial_balance: 10_000,
   prepared_by: treasurer,
   approved_by: moderator,
-  finalized_at: Date.today
+  finalized_at: Date.today,
 )
 
 # ============================================================

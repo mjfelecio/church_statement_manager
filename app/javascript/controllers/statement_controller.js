@@ -2,8 +2,21 @@ import { Controller } from "@hotwired/stimulus";
 
 // Connects to data-controller="statement"
 export default class extends Controller {
-  static targets = ["startingBalance", "endingBalance", "amount"];
+  static targets = [
+    "startingBalance",
+    "endingBalance",
+    "amount",
+    "initialBalance",
+  ];
   static values = { startingBalance: Number, endingBalance: Number };
+
+  getInitialBalance() {
+    if (this.hasInitialBalanceTarget) {
+      return Number(this.initialBalanceTarget.value);
+    }
+
+    return Number(this.startingBalanceTarget.textContent);
+  }
 
   recalculateBalance() {
     // Remove deleted transaction rows (those with _destroy field set to 1)
@@ -13,9 +26,6 @@ export default class extends Controller {
       return destroyField.value !== "1";
     });
 
-    const assetAmount = filteredTargets
-      .filter((el) => el.dataset.category === "asset")
-      .reduce((acc, el) => acc + (parseFloat(el.value) || 0), 0);
     const incomeAmount = filteredTargets
       .filter((el) => el.dataset.category === "income")
       .reduce((acc, el) => acc + (parseFloat(el.value) || 0), 0);
@@ -23,8 +33,8 @@ export default class extends Controller {
       .filter((el) => el.dataset.category === "expense")
       .reduce((acc, el) => acc + (parseFloat(el.value) || 0), 0);
 
-    this.startingBalance = assetAmount;
-    this.endingBalance = assetAmount + incomeAmount - expenseAmount;
+    this.startingBalance = this.getInitialBalance();
+    this.endingBalance = this.startingBalance + incomeAmount - expenseAmount;
 
     this.render();
   }
