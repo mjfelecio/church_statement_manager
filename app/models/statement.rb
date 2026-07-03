@@ -50,16 +50,13 @@ class Statement < ApplicationRecord
   end
 
   def previous_statement
-    # Incase of a new statement, all of its properties are nil
-    now = Date.today
-    year = self.year || now.year
-    month = self.month_number || now.month
+    return nil if month.blank? || year.blank?
 
     Statement
       .where(
         "year < :year OR (year = :year AND month < :month)",
         year: year,
-        month: month
+        month: month_number
       )
       .order(year: :desc, month: :desc)
       .first

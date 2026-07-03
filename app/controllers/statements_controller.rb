@@ -72,6 +72,18 @@ class StatementsController < ApplicationController
   def print
   end
 
+  # GET /statements/beginning_balance?month=january&year=2026
+  def beginning_balance
+    statement = Statement.new(
+      month: params[:month],
+      year: params[:year]
+    )
+
+    render json: {
+      beginning_balance: statement.beginning_balance
+    }
+  end
+
   private
     def set_statement
       @statement = Statement.includes(transactions: :account).find(params.expect(:id))

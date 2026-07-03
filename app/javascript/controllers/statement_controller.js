@@ -7,6 +7,8 @@ export default class extends Controller {
     "endingBalance",
     "amount",
     "initialBalance",
+    "month",
+    "year",
   ];
   static values = { startingBalance: Number, endingBalance: Number };
 
@@ -15,7 +17,7 @@ export default class extends Controller {
       return Number(this.initialBalanceTarget.value);
     }
 
-    return Number(this.startingBalanceTarget.textContent);
+    return Number(this.startingBalanceValue);
   }
 
   recalculateBalance() {
@@ -33,18 +35,41 @@ export default class extends Controller {
       .filter((el) => el.dataset.category === "expense")
       .reduce((acc, el) => acc + (parseFloat(el.value) || 0), 0);
 
-    this.startingBalance = this.getInitialBalance();
-    this.endingBalance = this.startingBalance + incomeAmount - expenseAmount;
+    this.startingBalanceValue = this.getInitialBalance();
+    this.endingBalanceValue =
+      this.startingBalanceValue + incomeAmount - expenseAmount;
 
     this.render();
   }
 
-  render() {
-    this.startingBalanceTarget.textContent = this.startingBalance.toFixed(2);
-    this.endingBalanceTarget.textContent = this.endingBalance.toFixed(2);
+  async refreshBeginningBalance() {
+    if (this.hasInitialBalanceTarget) {
+      return;
+    }
+
+    const month = this.monthTarget.value;
+    const year = this.yearTarget.value;
+
+    const response = await fetch(
+      `/statements/beginning_balance?month=${month}&year=${year}`,
+    );
+
+    if (!response.ok) return;
+
+    const data = await response.json();
+
+    this.startingBalanceValue = Number(data.beginning_balance);
+    this.recalculateBalance();
   }
 
-  connect() {
+  render() {
+    this.startingBalanceTarget.textContent =
+      this.startingBalanceValue.toFixed(2);
+    this.endingBalanceTarget.textContent = this.endingBalanceValue.toFixed(2);
+  }
+
+  async connect() {
+    await this.refreshBeginningBalance();
     this.recalculateBalance();
   }
 }

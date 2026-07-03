@@ -20,5 +20,9 @@ Rails.application.routes.draw do
       patch :finalize
       get :print
     end
+
+    collection do
+      get :beginning_balance
+    end
   end
 end

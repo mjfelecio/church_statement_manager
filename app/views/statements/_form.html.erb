@@ -28,14 +28,24 @@
             <%= form.select :month,
               month_options(statement.month),
               {},
-              class: "select select-bordered w-full" %>
+              class: "select select-bordered w-full",
+              data: {
+                statement_target: "month",
+                action: "change->statement#refreshBeginningBalance"
+              }
+            %>
           </div>
 
           <div class="form-control">
             <%= form.label :year, class: "label" %>
             <%= form.number_field :year,
               value: statement.year || Date.today.year,
-              class: "input input-bordered w-full" %>
+              class: "input input-bordered w-full",
+              data: {
+                statement_target: "year",
+                action: "change->statement#refreshBeginningBalance"
+              }
+            %>
           </div>
         </div>
       </div>
