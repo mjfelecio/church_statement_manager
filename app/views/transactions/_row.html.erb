@@ -1,4 +1,4 @@
-<div id="transaction-<%= f.object.id %>" data-transaction-row class="grid grid-cols-12 gap-2 py-1 items-start">
+<div id="transaction-<%= f.object.id %>" data-transaction-row class="grid grid-cols-10 gap-2 py-1 items-start">
 
   <div class="col-span-3">
     <%= f.select :account_id,
@@ -14,12 +14,6 @@
   <div class="col-span-4">
     <%= f.text_field :description,
       placeholder: "Description",
-      class: "input input-bordered w-full" %>
-  </div>
-
-  <div class="col-span-2">
-    <%= f.text_field :group_name,
-      placeholder: "Group",
       class: "input input-bordered w-full" %>
   </div>
 
@@ -40,7 +34,7 @@
   <div class="col-span-1">
     <button
       type="button"
-      class="btn btn-square btn-ghost text-error"
+      class="btn btn-square btn-outline text-error"
       data-action="transactions#deleteRow"
       data-transaction-id="<%= f.object.id %>"
     >

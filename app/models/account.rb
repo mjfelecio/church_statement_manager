@@ -7,6 +7,9 @@ class Account < ApplicationRecord
   }
 
   validates :code, :name, :category, presence: true
-
   validates :code, uniqueness: true
+
+  def display_name
+    group.present? ? "[#{group}] #{name}" : name
+  end
 end

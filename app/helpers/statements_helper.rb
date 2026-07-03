@@ -16,7 +16,7 @@ module StatementsHelper
     options_from_collection_for_select(
       Account.where(category: category).order(:name),
       :id,
-      :name,
+      :display_name,
       account_id
     )
   end

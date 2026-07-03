@@ -3,7 +3,6 @@ class CreateTransactions < ActiveRecord::Migration[8.0]
     create_table :transactions do |t|
       t.references :statement, null: false, foreign_key: true
       t.string :description
-      t.string :group_name
       t.decimal :amount
 
       t.timestamps

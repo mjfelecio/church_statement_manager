@@ -99,7 +99,7 @@ class StatementsController < ApplicationController
           :approved_by_id,
           :initial_balance,
           transactions_attributes: [
-            [ :id, :account_id, :description, :group_name, :amount, :_destroy ]
+            [ :id, :account_id, :description, :amount, :_destroy ]
           ]
         ]
       )

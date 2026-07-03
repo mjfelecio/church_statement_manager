@@ -48,7 +48,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_16_003608) do
   create_table "transactions", force: :cascade do |t|
     t.bigint "statement_id", null: false
     t.string "description"
-    t.string "group_name"
     t.decimal "amount"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

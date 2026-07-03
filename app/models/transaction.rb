@@ -2,10 +2,6 @@ class Transaction < ApplicationRecord
   belongs_to :statement
   belongs_to :account
 
-  before_validation do
-    self.group_name = nil if group_name.blank?
-  end
-
   validates :amount,
     presence: true,
     numericality: {
@@ -18,5 +14,9 @@ class Transaction < ApplicationRecord
     return unless statement.is_finalized?
 
     errors.add(:base, "Transaction cannot be edited when statement is finalized.")
+  end
+
+  def group_name
+    account&.group
   end
 end
