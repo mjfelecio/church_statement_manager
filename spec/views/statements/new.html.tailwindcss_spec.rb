@@ -3,7 +3,6 @@ require 'rails_helper'
 RSpec.describe "statements/new", type: :view do
   before(:each) do
     assign(:statement, Statement.new(
-      chapel: nil,
       month: 1,
       year: 1,
       beginning_balance: "9.99",
@@ -17,8 +16,6 @@ RSpec.describe "statements/new", type: :view do
     render
 
     assert_select "form[action=?][method=?]", statements_path, "post" do
-
-      assert_select "input[name=?]", "statement[chapel_id]"
 
       assert_select "input[name=?]", "statement[month]"
 

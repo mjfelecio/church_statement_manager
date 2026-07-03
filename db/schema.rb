@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_06_18_120651) do
+ActiveRecord::Schema[8.0].define(version: 2026_06_16_003608) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -24,13 +24,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_18_120651) do
     t.index ["code"], name: "index_accounts_on_code", unique: true
   end
 
-  create_table "chapels", force: :cascade do |t|
-    t.string "name"
-    t.text "address"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "people", force: :cascade do |t|
     t.string "name"
     t.string "position"
@@ -39,7 +32,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_18_120651) do
   end
 
   create_table "statements", force: :cascade do |t|
-    t.bigint "chapel_id", null: false
     t.integer "month"
     t.integer "year"
     t.bigint "prepared_by_id", null: false
@@ -48,7 +40,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_18_120651) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["approved_by_id"], name: "index_statements_on_approved_by_id"
-    t.index ["chapel_id"], name: "index_statements_on_chapel_id"
     t.index ["prepared_by_id"], name: "index_statements_on_prepared_by_id"
   end
 
@@ -64,7 +55,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_18_120651) do
     t.index ["statement_id"], name: "index_transactions_on_statement_id"
   end
 
-  add_foreign_key "statements", "chapels"
   add_foreign_key "statements", "people", column: "approved_by_id"
   add_foreign_key "statements", "people", column: "prepared_by_id"
   add_foreign_key "transactions", "accounts"

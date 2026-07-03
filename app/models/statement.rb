@@ -1,11 +1,13 @@
 class Statement < ApplicationRecord
-  belongs_to :chapel
   belongs_to :prepared_by, class_name: "Person"
   belongs_to :approved_by, class_name: "Person"
 
   has_many :transactions, dependent: :destroy
 
   accepts_nested_attributes_for :transactions, allow_destroy: true, reject_if: :all_blank
+
+  CHAPEL_NAME = "San Roque Chapel"
+  CHAPEL_ADDRESS = "Nangka, Mabini, Bohol"
 
   # matches DATE::MONTHNAMES conversion
   enum :month, {
@@ -23,14 +25,12 @@ class Statement < ApplicationRecord
       december: 12
   }
 
-
-
-  validates :year, :month, :chapel_id, presence: true
+  validates :year, :month, presence: true
 
   validates :month,
     uniqueness: {
-      scope: [ :year, :chapel_id ],
-      message: "already exists for this chapel and year"
+      scope: [ :year ],
+      message: "already exists for this year"
     }
 
   validates :year,
@@ -39,7 +39,7 @@ class Statement < ApplicationRecord
     }
 
   validate :prepared_and_approved_by_must_differ
-  validate :cannot_be_edited_when_finalized
+  validate :cannot_be_edited_when_finalized, on: [ :update, :destroy ]
 
   def income_transactions
     transactions.joins(:account).where(account: { category: :income })

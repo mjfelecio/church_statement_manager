@@ -12,7 +12,7 @@ class Transaction < ApplicationRecord
       greater_than_or_equal_to: 0
     }
 
-  validate :cannot_be_edited_when_finalized
+  validate :cannot_be_edited_when_finalized, on: [ :update, :destroy ]
 
   def cannot_be_edited_when_finalized
     return unless statement.is_finalized?

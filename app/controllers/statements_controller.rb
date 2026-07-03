@@ -81,7 +81,6 @@ class StatementsController < ApplicationController
     def statement_params
       params.expect(
         statement: [
-          :chapel_id,
           :month,
           :year,
           :prepared_by_id,

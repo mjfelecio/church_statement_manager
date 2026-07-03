@@ -4,7 +4,6 @@ RSpec.describe "statements/index", type: :view do
   before(:each) do
     assign(:statements, [
       Statement.create!(
-        chapel: nil,
         month: 2,
         year: 3,
         beginning_balance: "9.99",
@@ -13,7 +12,6 @@ RSpec.describe "statements/index", type: :view do
         approved_by: nil
       ),
       Statement.create!(
-        chapel: nil,
         month: 2,
         year: 3,
         beginning_balance: "9.99",

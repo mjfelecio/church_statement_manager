@@ -3,7 +3,6 @@ require 'rails_helper'
 RSpec.describe "statements/show", type: :view do
   before(:each) do
     assign(:statement, Statement.create!(
-      chapel: nil,
       month: 2,
       year: 3,
       beginning_balance: "9.99",

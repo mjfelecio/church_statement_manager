@@ -14,7 +14,6 @@ Rails.application.routes.draw do
 
   resources :people
   resources :accounts
-  resources :chapels
 
   resources :statements do
     member do

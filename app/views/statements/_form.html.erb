@@ -24,14 +24,6 @@
 
         <div class="grid gap-4 md:grid-cols-3">
           <div class="form-control">
-            <%= form.label :chapel_id, "Chapel", class: "label" %>
-            <%= form.select :chapel_id,
-              chapel_options,
-              {},
-              class: "select select-bordered w-full" %>
-          </div>
-
-          <div class="form-control">
             <%= form.label :month, class: "label" %>
             <%= form.select :month,
               month_options,
