@@ -74,7 +74,7 @@ class StatementsController < ApplicationController
 
   # GET /statements/beginning_balance?month=january&year=2026
   def beginning_balance
-    statement = Statement.new(
+    statement = Statement.find_or_initialize_by(
       month: params[:month],
       year: params[:year]
     )
