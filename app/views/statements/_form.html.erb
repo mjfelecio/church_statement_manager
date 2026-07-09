@@ -81,6 +81,7 @@
           <%= form.label :initial_balance, class: "label" %>
           <%= form.number_field :initial_balance,
             value: statement.initial_balance,
+            step: 0.01,
             class: "input input-bordered w-full",
             data: {
               statement_target: "initialBalance",
