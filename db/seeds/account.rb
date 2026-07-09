@@ -25,7 +25,7 @@ Account.find_or_create_by!(code: "305") do |a|
 end
 
 Account.find_or_create_by!(code: "306") do |a|
-  a.name = "Subsidy From Chapel Subsidy"
+  a.name = "Subsidy From PFC Office"
   a.category = :income
 end
 
