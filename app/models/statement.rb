@@ -45,6 +45,10 @@ class Statement < ApplicationRecord
   validate :cannot_be_edited_when_finalized, on: [ :update, :destroy ]
   validate :only_one_initial_balance
 
+  def display_name
+    "#{self.year}-#{self.month.titlecase}-Financial-Statement"
+  end
+
   def month_number
     Statement.months[month]
   end
