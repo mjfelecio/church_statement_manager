@@ -19,16 +19,24 @@
   </div>
 
   <!-- Beginning Balance -->
-  <div class="mt-8">
+  <table class="w-full">
+    <colgroup>
+      <col>
+      <col class="w-12">
+      <col class="w-24">
+      <col class="w-28">
+    </colgroup>
     <strong>CASH BEGINNING BALANCE:</strong>
 
-    <div class="pl-4 w-full flex justify-between items-center">
-      <p>Cash On Hand</p>
-      <strong class="text-right underline-offset-4 decoration-double underline">
-        <%= number_to_currency(@statement.beginning_balance, unit: "₱") %>
-      </strong>
-    </div>
-  </div>
+    <tr>
+      <td class="pl-4">Cash On Hand</td>
+      <td class="text-right">101</td>
+      <td></td> 
+      <td class="text-right underline-offset-4 decoration-double underline">
+        <strong><%= number_to_currency(@statement.beginning_balance, unit: "₱") %></strong>
+      </td>
+    </tr>
+  </table>
 
   <br>
 
