@@ -1,1 +1,173 @@
-<button class="btn btn-primary">Hello daisyUI!</button>
+<div class="w-full max-w-5xl mx-auto space-y-8">
+  <div>
+    <h1 class="text-3xl font-bold"><%= Statement::CHAPEL_NAME %></h1>
+    <p class="text-base-content/70 mt-1">Chapel Ledger &mdash; Financial Statement Dashboard</p>
+  </div>
+
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    <div class="stat border border-base-300 rounded-box">
+      <div class="stat-title">Accounts</div>
+      <div class="stat-value"><%= @accounts_count %></div>
+    </div>
+    <div class="stat border border-base-300 rounded-box">
+      <div class="stat-title">People</div>
+      <div class="stat-value"><%= @people_count %></div>
+    </div>
+    <div class="stat border border-base-300 rounded-box">
+      <div class="stat-title">Statements</div>
+      <div class="stat-value"><%= @statements_count %></div>
+      <div class="stat-desc">
+        <%= @finalized_count %> finalized &middot; <%= @draft_count %> draft
+      </div>
+    </div>
+    <div class="stat border border-base-300 rounded-box">
+      <div class="stat-title">YTD Net</div>
+      <div class="stat-value text-<%= @ytd_income >= @ytd_expenses ? 'success' : 'error' %>">
+        ₱<%= number_with_delimiter(number_with_precision(@ytd_income - @ytd_expenses, precision: 2)) %>
+      </div>
+      <div class="stat-desc">
+        ₱<%= number_with_delimiter(number_with_precision(@ytd_income, precision: 2)) %> in &middot;
+        ₱<%= number_with_delimiter(number_with_precision(@ytd_expenses, precision: 2)) %> out
+      </div>
+    </div>
+  </div>
+
+  <% if @latest_statement %>
+    <div class="card bg-base-100 border border-base-300">
+      <div class="card-body">
+        <div class="flex items-start justify-between">
+          <div>
+            <h2 class="card-title">Latest Month</h2>
+            <p class="text-base-content/70">
+              <%= @latest_statement.month.humanize %> <%= @latest_statement.year %>
+            </p>
+          </div>
+          <div class="badge <%= @latest_statement.is_finalized? ? 'badge-success' : 'badge-warning' %> badge-outline">
+            <%= @latest_statement.is_finalized? ? "Finalized" : "Draft" %>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
+          <div>
+            <div class="text-xs uppercase text-base-content/60">Beginning Balance</div>
+            <div class="text-lg font-semibold">₱<%= number_with_precision(@latest_statement.beginning_balance, precision: 2, delimiter: ",") %></div>
+          </div>
+          <div>
+            <div class="text-xs uppercase text-base-content/60">Total Income</div>
+            <div class="text-lg font-semibold text-success">₱<%= number_with_precision(@latest_statement.total_income, precision: 2, delimiter: ",") %></div>
+          </div>
+          <div>
+            <div class="text-xs uppercase text-base-content/60">Total Expenses</div>
+            <div class="text-lg font-semibold text-error">₱<%= number_with_precision(@latest_statement.total_expenses, precision: 2, delimiter: ",") %></div>
+          </div>
+          <div>
+            <div class="text-xs uppercase text-base-content/60">Ending Balance</div>
+            <div class="text-lg font-semibold">₱<%= number_with_precision(@latest_statement.ending_balance, precision: 2, delimiter: ",") %></div>
+          </div>
+        </div>
+
+        <div class="card-actions justify-end mt-4">
+          <%= link_to "View Statement", @latest_statement, class: "btn btn-soft btn-primary" %>
+          <%= link_to "Print", print_statement_path(@latest_statement), class: "btn btn-ghost" %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div class="card bg-base-100 border border-base-300">
+      <div class="card-body">
+        <h2 class="card-title">Recent Statements</h2>
+
+        <% if @recent_statements.any? %>
+          <div class="divide-y">
+            <% @recent_statements.each do |statement| %>
+              <%= link_to statement, class: "flex items-center justify-between py-3 hover:bg-base-200 -mx-4 px-4 rounded-box transition-colors" do %>
+                <div>
+                  <span class="font-medium"><%= statement.month.humanize %> <%= statement.year %></span>
+                  <div class="text-xs text-base-content/60">
+                    Prepared by <%= statement.prepared_by.name %>
+                  </div>
+                </div>
+                <div class="flex items-center gap-3">
+                  <span class="text-sm font-medium">₱<%= number_with_precision(statement.ending_balance, precision: 0, delimiter: ",") %></span>
+                  <span class="badge badge-sm <%= statement.is_finalized? ? 'badge-success' : 'badge-warning' %> badge-outline">
+                    <%= statement.is_finalized? ? "Finalized" : "Draft" %>
+                  </span>
+                </div>
+              <% end %>
+            <% end %>
+          </div>
+
+          <div class="card-actions justify-end mt-2">
+            <%= link_to "View All Statements", statements_path, class: "btn btn-ghost btn-sm" %>
+          </div>
+        <% else %>
+          <p class="text-base-content/60 py-4">No statements yet.</p>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="card bg-base-100 border border-base-300">
+      <div class="card-body">
+        <h2 class="card-title">Quick Actions</h2>
+
+        <div class="flex flex-col gap-3 mt-2">
+          <%= link_to new_statement_path, class: "btn btn-primary" do %>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-plus">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M12 5l0 14" />
+              <path d="M5 12l14 0" />
+            </svg>
+            New Statement
+          <% end %>
+          <%= link_to statements_path, class: "btn btn-soft" do %>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-file-invoice">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+              <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2" />
+              <path d="M9 7l1 0" />
+              <path d="M9 13l6 0" />
+              <path d="M13 17l2 0" />
+            </svg>
+            Manage Statements
+          <% end %>
+        </div>
+
+        <div class="divider"></div>
+
+        <h3 class="font-semibold text-sm">Administration</h3>
+        <div class="flex flex-col gap-2 mt-2">
+          <%= link_to accounts_path, class: "btn btn-ghost btn-sm justify-start" do %>
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-receipt-dollar">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M5 21v-16a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v16l-3 -2l-2 2l-2 -2l-2 2l-2 -2l-3 2" />
+              <path d="M14.8 8a2 2 0 0 0 -1.8 -1h-2a2 2 0 1 0 0 4h2a2 2 0 1 1 0 4h-2a2 2 0 0 1 -1.8 -1" />
+              <path d="M12 6v10" />
+            </svg>
+            Manage Accounts
+          <% end %>
+          <%= link_to people_path, class: "btn btn-ghost btn-sm justify-start" do %>
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-users">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M5 7a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
+              <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+              <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+              <path d="M21 21v-2a4 4 0 0 0 -3 -3.85" />
+            </svg>
+            Manage People
+          <% end %>
+          <%= link_to download_backup_path, class: "btn btn-ghost btn-sm justify-start", data: { turbo: false } do %>
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-download">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
+              <path d="M7 11l5 5l5 -5" />
+              <path d="M12 4l0 12" />
+            </svg>
+            Download Backup
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
