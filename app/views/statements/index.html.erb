@@ -7,29 +7,12 @@
 
   <div class="flex justify-between items-center">
     <h1 class="font-bold text-4xl">Statements</h1>
-    <%= link_to "New statement", new_statement_path, class: "rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white block font-medium" %>
+    <%= link_to "New statement", new_statement_path, class: "btn btn-primary" %>
   </div>
 
   <div class="divider"></div>
 
-  <div id="statements" class="min-w-full divide-y divide-gray-200 space-y-5">
-    <% if @statements.any? %>
-      <% @statements.each do |statement| %>
-        <div class="relative hover:bg-base-200 p-2 ronded-lg flex flex-col sm:flex-row justify-between items-center gap-8 pb-5 sm:pb-0">
-          <div class="flex-1">
-            <%= render statement %>
-          </div>
-
-          <%= link_to "", statement, class: "w-full absolute inset-0" %>
-
-          <div class="z-10 flex flex-col gap-2">
-            <%= link_to "Edit", edit_statement_path(statement), class: " btn btn-sm btn-success" %>
-            <%= button_to "Delete", statement, method: :delete, class: "btn btn-sm btn-error", data: { turbo_confirm: "Are you sure?" } %>
-          </div>
-        </div>
-      <% end %>
-    <% else %>
-      <p class="text-center my-10">No statements found.</p>
-    <% end %>
+  <div id="statements" class="space-y-3">
+    <%= render @statements %>
   </div>
 </div>
