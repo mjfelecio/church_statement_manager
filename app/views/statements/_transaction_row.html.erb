@@ -1,14 +1,10 @@
 <div id="transaction-<%= f.object.id %>" data-transaction-row class="grid grid-cols-10 gap-2 py-1 items-start">
-
   <div class="col-span-3">
     <%= f.select :account_id,
       account_options(f.object.account_id, category),
       { },
       class: "select select-bordered w-full",
-      data: {
-        action: "change->transactions#updateAccountCategory",
-        transaction_id: f.object.id
-      } %>
+      data: { transaction_id: f.object.id } %>
   </div>
 
   <div class="col-span-4">
@@ -41,5 +37,4 @@
       ✕
     </button>
   </div>
-
 </div>

@@ -111,7 +111,7 @@ class Statement < ApplicationRecord
        .where.not(initial_balance: nil)
        .order(:id)
        .first
-   end
+  end
 
   # Initial balance is the amount of cash we have at the very first statement
   def initial_balance_statement_present?

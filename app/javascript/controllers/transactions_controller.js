@@ -41,5 +41,7 @@ export default class extends Controller {
     } else {
       row.remove();
     }
+
+    this.element.dispatchEvent(new Event("change", { bubbles: true }));
   }
 }

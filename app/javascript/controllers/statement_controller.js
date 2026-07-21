@@ -9,10 +9,18 @@ export default class extends Controller {
     "initialBalance",
     "month",
     "year",
+    "form",
+    "toast",
   ];
-  static values = { startingBalance: Number, endingBalance: Number, statementMonth: String };
+  static values = {
+    startingBalance: Number,
+    endingBalance: Number,
+    statementMonth: String,
+    hasChanges: Boolean,
+    saving: Boolean,
+    isFinalized: Boolean,
+  };
 
-  // Maps month key strings to their numeric order (1-12)
   static monthOrder = {
     january: 1, february: 2, march: 3, april: 4,
     may: 5, june: 6, july: 7, august: 8,
@@ -103,6 +111,74 @@ export default class extends Controller {
     }
   }
 
+  markChanged() {
+    if (this.isFinalizedValue) return;
+    this.hasChangesValue = true;
+    this.debounceAutoSave();
+  }
+
+  debounceAutoSave() {
+    clearTimeout(this._autoSaveTimer);
+    this._autoSaveTimer = setTimeout(() => this.autoSave(), 3000);
+  }
+
+  async autoSave() {
+    if (!this.hasChangesValue || this.savingValue) return;
+
+    this.savingValue = true;
+
+    const formData = new FormData(this.formTarget);
+
+    try {
+      const response = await fetch(this.formTarget.action, {
+        method: "POST",
+        body: formData,
+        headers: { Accept: "application/json" },
+        credentials: "same-origin",
+      });
+
+      if (response.ok) {
+        this.hasChangesValue = false;
+
+        const location = response.headers.get("Location");
+        if (location) {
+          this.formTarget.action = location;
+          let methodField = this.formTarget.querySelector("[name='_method']");
+          if (!methodField) {
+            methodField = document.createElement("input");
+            methodField.type = "hidden";
+            methodField.name = "_method";
+            this.formTarget.appendChild(methodField);
+          }
+          methodField.value = "patch";
+        }
+
+        this.showToast("Draft auto-saved.");
+      } else {
+        this.showToast("Auto-save failed.");
+      }
+    } catch {
+      this.showToast("Auto-save failed.");
+    } finally {
+      this.savingValue = false;
+    }
+  }
+
+  showToast(message) {
+    if (!this.hasToastTarget) return;
+
+    this.toastTarget.textContent = message;
+    this.toastTarget.classList.remove("hidden", "translate-y-2", "opacity-0");
+    this.toastTarget.classList.add("translate-y-0", "opacity-100");
+
+    clearTimeout(this._toastTimer);
+    this._toastTimer = setTimeout(() => {
+      this.toastTarget.classList.remove("translate-y-0", "opacity-100");
+      this.toastTarget.classList.add("translate-y-2", "opacity-0");
+      setTimeout(() => this.toastTarget.classList.add("hidden"), 300);
+    }, 2500);
+  }
+
   render() {
     this.startingBalanceTarget.textContent =
       this.startingBalanceValue.toFixed(2);
@@ -113,5 +189,10 @@ export default class extends Controller {
     await this.refreshTakenMonths();
     await this.refreshBeginningBalance();
     this.recalculateBalance();
+  }
+
+  disconnect() {
+    clearTimeout(this._autoSaveTimer);
+    clearTimeout(this._toastTimer);
   }
 }

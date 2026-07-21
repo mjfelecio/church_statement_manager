@@ -1,4 +1,10 @@
-<%= form_with(model: statement, class: "contents", data: { controller: "statement", statement_statement_month_value: statement.month }) do |form| %>
+<%= form_with(model: statement, class: "contents", data: { 
+  controller: "statement", 
+  statement_target: "form",
+  statement_statement_month_value: statement.month,
+  statement_is_finalized_value: statement.is_finalized?,
+  action: "input->statement#markChanged change->statement#markChanged"
+}) do |form| %>
   <% if statement.errors.any? %>
     <div class="alert alert-error mb-6">
       <div>
@@ -201,12 +207,20 @@
       <div class="card-body">
         <h2 class="card-title">Signatories</h2>
 
+        <% if statement.new_record? %>
+          <% people = Person.limit(2).to_a %>
+          <% if people.any? %>
+            <% default_prepared_by_id = people[0].id %>
+            <% default_approved_by_id = (people[1] || people[0]).id %>
+          <% end %>
+        <% end %>
+
         <div class="grid gap-4 md:grid-cols-2">
           <div class="form-control">
             <%= form.label :prepared_by_id, "Prepared By", class: "label" %>
             <%= form.select :prepared_by_id,
               person_options,
-              {},
+              statement.new_record? ? { selected: default_prepared_by_id } : {},
               class: "select select-bordered w-full" %>
           </div>
 
@@ -214,7 +228,7 @@
             <%= form.label :approved_by_id, "Approved By", class: "label" %>
             <%= form.select :approved_by_id,
               person_options,
-              {},
+              statement.new_record? ? { selected: default_approved_by_id } : {},
               class: "select select-bordered w-full" %>
           </div>
         </div>
@@ -270,5 +284,9 @@
         class: "btn btn-ghost" %>
     </div>
 
+    <div
+      data-statement-target="toast"
+      class="hidden fixed bottom-6 right-6 z-50 transition-all duration-300 ease-in-out translate-y-2 opacity-0 bg-base-300 text-base-content px-4 py-2 rounded-box shadow-lg text-sm font-medium"
+    ></div>
   </div>
 <% end %>
