@@ -25,4 +25,9 @@ Rails.application.routes.draw do
       get :beginning_balance
     end
   end
+
+  resource :backup, only: [:new, :create, :show] do
+    get :download, on: :collection
+    post :confirm, on: :collection
+  end
 end

@@ -24,7 +24,17 @@
 
   <body>
       <%= render 'layouts/sidebar' do %>
-          <main class="container mx-auto not-print:my-12 not-print:px-5 flex">
+          <main class="container mx-auto not-print:my-12 not-print:px-5 flex flex-col">
+              <% if notice.present? %>
+                <div class="alert alert-soft alert-success mb-4">
+                  <span><%= notice %></span>
+                </div>
+              <% end %>
+              <% if alert.present? %>
+                <div class="alert alert-soft alert-error mb-4">
+                  <span><%= alert %></span>
+                </div>
+              <% end %>
               <%= yield %>
           </main>
     <% end %>

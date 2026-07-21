@@ -89,6 +89,30 @@
             <span class="is-drawer-close:hidden">People</span>
           <% end %>
         </div>
+
+        <div class="divider"></div>
+
+        <div class="list">
+          <span class="list-row text-xs font-semibold uppercase tracking-wider text-base-content/50 is-drawer-close:hidden">Backup</span>
+          <%= link_to(download_backup_path, class: "list-row hover:bg-base-300 is-drawer-close:tooltip is-drawer-close:tooltip-right", data: { tip: "Download Backup", turbo: false }) do %>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-download">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
+              <path d="M7 11l5 5l5 -5" />
+              <path d="M12 4l0 12" />
+            </svg>
+            <span class="is-drawer-close:hidden">Download Backup</span>
+          <% end %>
+          <%= link_to(new_backup_path, class: "list-row hover:bg-base-300 is-drawer-close:tooltip is-drawer-close:tooltip-right", data: { tip: "Restore Backup" }) do %>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-upload">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
+              <path d="M7 11l5 -5l5 5" />
+              <path d="M12 4l0 12" />
+            </svg>
+            <span class="is-drawer-close:hidden">Restore Backup</span>
+          <% end %>
+        </div>
       </ul>
     </div>
   </div>
