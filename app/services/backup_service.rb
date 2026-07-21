@@ -175,14 +175,14 @@ class BackupService
         statement.update_column(:initial_balance, attrs["initial_balance"])
       end
 
-      map[[attrs["month"], attrs["year"]]] = statement
+      map[[ attrs["month"], attrs["year"] ]] = statement
     end
   end
 
   def self.import_transactions(transactions_data, accounts_map, statements_map)
     transactions_data.each do |attrs|
       account = accounts_map[attrs["account_code"]]
-      statement = statements_map[[attrs["statement_month"], attrs["statement_year"]]]
+      statement = statements_map[[ attrs["statement_month"], attrs["statement_year"] ]]
 
       unless account && statement
         missing = []

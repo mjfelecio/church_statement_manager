@@ -18,7 +18,6 @@ RSpec.describe "accounts/edit", type: :view do
     render
 
     assert_select "form[action=?][method=?]", account_path(account), "post" do
-
       assert_select "input[name=?]", "account[code]"
 
       assert_select "input[name=?]", "account[name]"

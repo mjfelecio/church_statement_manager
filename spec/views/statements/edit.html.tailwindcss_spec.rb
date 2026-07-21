@@ -20,7 +20,6 @@ RSpec.describe "statements/edit", type: :view do
     render
 
     assert_select "form[action=?][method=?]", statement_path(statement), "post" do
-
       assert_select "input[name=?]", "statement[month]"
 
       assert_select "input[name=?]", "statement[year]"
