@@ -13,11 +13,16 @@ class StatementsController < ApplicationController
   # GET /statements/new
   def new
     @statement = Statement.new
+    @taken_months = Statement.where(year: Date.today.year).pluck(:month)
+    @earliest_statement = Statement.order(:year, :month).first
   end
 
   # GET /statements/1/edit
   def edit
     redirect_to @statement, notice: "Statement is finalized and cannot be edited." if @statement.is_finalized?
+
+    @taken_months = Statement.where(year: @statement.year).pluck(:month)
+    @earliest_statement = Statement.order(:year, :month).first
   end
 
   # POST /statements or /statements.json
@@ -70,6 +75,17 @@ class StatementsController < ApplicationController
   end
 
   def print
+  end
+
+  # GET /statements/taken_months?year=2026
+  def taken_months
+    taken = Statement.where(year: params[:year]).pluck(:month)
+    earliest = Statement.order(:year, :month).first
+
+    render json: {
+      taken_months: taken,
+      earliest: earliest ? { month: earliest.month, year: earliest.year } : nil
+    }
   end
 
   # GET /statements/beginning_balance?month=january&year=2026

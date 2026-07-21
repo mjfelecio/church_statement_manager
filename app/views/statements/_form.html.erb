@@ -1,4 +1,4 @@
-<%= form_with(model: statement, class: "contents", data: { controller: "statement" }) do |form| %>
+<%= form_with(model: statement, class: "contents", data: { controller: "statement", statement_statement_month_value: statement.month }) do |form| %>
   <% if statement.errors.any? %>
     <div class="alert alert-error mb-6">
       <div>
@@ -26,7 +26,10 @@
           <div class="form-control">
             <%= form.label :month, class: "label" %>
             <%= form.select :month,
-              month_options(statement.month),
+              month_options(statement.month,
+                taken_months: @taken_months || [],
+                earliest: @earliest_statement ? { month: @earliest_statement.month, year: @earliest_statement.year } : nil,
+                selected_year: statement.year || Date.today.year),
               {},
               class: "select select-bordered w-full",
               data: {
@@ -34,16 +37,18 @@
                 action: "change->statement#refreshBeginningBalance"
               }
             %>
+            <p class="text-xs text-base-content/50 mt-1">Greyed out months already have a statement or are before the earliest record.</p>
           </div>
 
           <div class="form-control">
             <%= form.label :year, class: "label" %>
             <%= form.number_field :year,
               value: statement.year || Date.today.year,
+              min: @earliest_statement&.year,
               class: "input input-bordered w-full",
               data: {
                 statement_target: "year",
-                action: "change->statement#refreshBeginningBalance"
+                action: "change->statement#refreshTakenMonths change->statement#refreshBeginningBalance"
               }
             %>
           </div>

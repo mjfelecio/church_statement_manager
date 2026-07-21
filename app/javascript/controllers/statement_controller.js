@@ -10,7 +10,14 @@ export default class extends Controller {
     "month",
     "year",
   ];
-  static values = { startingBalance: Number, endingBalance: Number };
+  static values = { startingBalance: Number, endingBalance: Number, statementMonth: String };
+
+  // Maps month key strings to their numeric order (1-12)
+  static monthOrder = {
+    january: 1, february: 2, march: 3, april: 4,
+    may: 5, june: 6, july: 7, august: 8,
+    september: 9, october: 10, november: 11, december: 12,
+  };
 
   getInitialBalance() {
     if (this.hasInitialBalanceTarget) {
@@ -21,7 +28,6 @@ export default class extends Controller {
   }
 
   recalculateBalance() {
-    // Remove deleted transaction rows (those with _destroy field set to 1)
     const filteredTargets = this.amountTargets.filter((el) => {
       const row = el.closest("[data-transaction-row]");
       const destroyField = row.querySelector("[name*='_destroy']");
@@ -62,6 +68,41 @@ export default class extends Controller {
     this.recalculateBalance();
   }
 
+  async refreshTakenMonths() {
+    const year = this.yearTarget.value;
+    if (!year) return;
+
+    const response = await fetch(`/statements/taken_months?year=${year}`);
+    if (!response.ok) return;
+
+    const { taken_months, earliest } = await response.json();
+
+    if (this.yearTarget instanceof HTMLInputElement && earliest) {
+      this.yearTarget.min = earliest.year;
+    }
+
+    for (const option of this.monthTarget.options) {
+      const monthKey = option.value;
+      const monthNum = this.constructor.monthOrder[monthKey];
+      let disabled = false;
+
+      if (taken_months.includes(monthKey) && monthKey !== this.statementMonthValue) {
+        disabled = true;
+      }
+
+      if (earliest) {
+        const yearNum = parseInt(year, 10);
+        if (yearNum < earliest.year) {
+          disabled = true;
+        } else if (yearNum === earliest.year && monthNum < this.constructor.monthOrder[earliest.month]) {
+          disabled = true;
+        }
+      }
+
+      option.disabled = disabled;
+    }
+  }
+
   render() {
     this.startingBalanceTarget.textContent =
       this.startingBalanceValue.toFixed(2);
@@ -69,6 +110,7 @@ export default class extends Controller {
   }
 
   async connect() {
+    await this.refreshTakenMonths();
     await this.refreshBeginningBalance();
     this.recalculateBalance();
   }

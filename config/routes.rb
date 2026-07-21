@@ -23,6 +23,7 @@ Rails.application.routes.draw do
 
     collection do
       get :beginning_balance
+      get :taken_months
     end
   end
 

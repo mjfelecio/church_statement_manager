@@ -3,12 +3,26 @@ module StatementsHelper
     Person.all.map { |person| [ person.name, person.id ] }
   end
 
-  def month_options(statement_month)
+  def month_options(statement_month, taken_months: [], earliest: nil, selected_year: nil)
+    options = Statement.months.map do |key, month_num|
+      disabled = false
+
+      disabled = true if taken_months.include?(key.to_s) && statement_month != key.to_s
+
+      if earliest && selected_year
+        if selected_year.to_i < earliest[:year]
+          disabled = true
+        elsif selected_year.to_i == earliest[:year] && month_num < Statement.months[earliest[:month]]
+          disabled = true
+        end
+      end
+
+      [ key.humanize, key, { disabled: disabled } ]
+    end
+
     options_for_select(
-      Statement.months.map { |k, v| [ k.humanize, k ] },
-      {
-        selected: statement_month || Date::MONTHNAMES[Date.today.month].downcase
-      }
+      options,
+      selected: statement_month || Date::MONTHNAMES[Date.today.month].downcase
     )
   end
 
