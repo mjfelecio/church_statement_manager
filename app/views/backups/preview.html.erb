@@ -1,6 +1,5 @@
 <div class="w-full max-w-2xl mx-auto">
   <h1 class="text-2xl font-bold mb-6">Confirm Restore</h1>
-
   <div class="alert alert-error mb-6">
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-alert-triangle">
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -12,11 +11,9 @@
       <strong>Warning:</strong> Restoring a backup will permanently replace all existing data. This action cannot be undone.
     </span>
   </div>
-
   <div class="card bg-base-100 border border-base-300 mb-6">
     <div class="card-body">
       <h2 class="card-title">Backup Summary</h2>
-
       <dl class="divide-y">
         <div class="flex justify-between py-3">
           <dt class="font-medium">Backup Version</dt>
@@ -32,12 +29,10 @@
         </div>
         <div class="flex justify-between py-3">
           <dt class="font-medium">Exported At</dt>
-          <dd><%= @backup_data["exported_at"] %></dd>
+          <dd><%=  @backup_data["exported_at"].to_time.strftime("%A, %B %d, %Y %I:%M %p") %></dd>
         </div>
       </dl>
-
       <div class="divider"></div>
-
       <h3 class="font-semibold mb-2">Records to be restored</h3>
       <dl class="divide-y">
         <div class="flex justify-between py-2">
@@ -59,10 +54,8 @@
       </dl>
     </div>
   </div>
-
   <div class="flex justify-end gap-2">
     <%= link_to "Cancel", backup_path, class: "btn btn-ghost" %>
-
     <%= button_to "Confirm Restore",
       confirm_backup_path,
       method: :post,
