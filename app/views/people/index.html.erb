@@ -1,17 +1,10 @@
 <% content_for :title, "People" %>
-
 <div class="w-full center-page">
-  <% if notice.present? %>
-    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
-  <% end %>
-
   <div class="flex justify-between items-center">
     <h1 class="font-bold text-4xl">People</h1>
     <%= link_to "New person", new_person_path, class: "rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white block font-medium" %>
   </div>
-
   <div class="divider" ></div>
-
   <div id="people" class="min-w-full divide-y divide-gray-200 space-y-5">
     <% if @people.any? %>
       <% @people.each do |person| %>

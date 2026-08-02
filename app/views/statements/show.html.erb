@@ -1,26 +1,18 @@
 <% content_for :title, "Showing statement" %>
-
 <div class="md:w-2/3 space-y-6 w-full center-page">
-  <% if notice.present? %>
-    <p class="w-full py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
-  <% end %>
-
   <!-- Statement Details -->
   <div class="card bg-base-100 border border-base-300">
     <div class="card-body">
       <h2 class="card-title">Statement Details</h2>
-
       <div class="grid gap-4 md:grid-cols-3">
         <div>
           <div class="label">Chapel</div>
           <div class="font-medium"><%= Statement::CHAPEL_NAME %></div>
         </div>
-
         <div>
           <div class="label">Month</div>
           <div class="font-medium"><%= @statement.month.humanize %></div>
         </div>
-
         <div>
           <div class="label">Year</div>
           <div class="font-medium"><%= @statement.year %></div>
@@ -28,12 +20,10 @@
       </div>
     </div>
   </div>
-
   <!-- Balances -->
   <div class="card bg-base-100 border border-base-300">
     <div class="card-body">
       <h2 class="card-title">Balances</h2>
-
       <div class="grid gap-4 md:grid-cols-2">
         <div>
           <div class="label">Beginning Balance</div>
@@ -41,7 +31,6 @@
             ₱ <%= number_with_precision(@statement.beginning_balance, precision: 2) %>
           </div>
         </div>
-
         <div>
           <div class="label">Ending Balance</div>
           <div class="text-xl font-medium">
@@ -51,18 +40,15 @@
       </div>
     </div>
   </div>
-
   <!-- Transactions -->
   <div class="card bg-base-100 border border-base-300">
     <div class="card-body">
       <h2 class="card-title">Transactions</h2>
-
       <!-- Income -->
       <div>
         <div class="flex items-center justify-between mb-4">
           <h3 class="text-lg font-semibold">Income</h3>
         </div>
-
         <div class="overflow-x-auto">
           <table class="table">
             <thead>
@@ -73,7 +59,6 @@
                 <th class="text-right">Amount</th>
               </tr>
             </thead>
-
             <tbody>
               <% @statement.income_transactions.each do |transaction| %>
                 <tr>
@@ -82,10 +67,8 @@
                       <span><%= transaction.account.display_name %></span>
                     </div>
                   </td>
-
                   <td><%= transaction.description.presence || "-" %></td>
                   <td><%= transaction.account.code %></td>
-
                   <td class="text-right">
                     ₱ <%= number_with_precision(transaction.amount, precision: 2) %>
                   </td>
@@ -95,15 +78,12 @@
           </table>
         </div>
       </div>
-
       <div class="divider"></div>
-
       <!-- Expenses -->
       <div>
         <div class="flex items-center justify-between mb-4">
           <h3 class="text-lg font-semibold">Expenses</h3>
         </div>
-
         <div class="overflow-x-auto">
           <table class="table">
             <thead>
@@ -114,7 +94,6 @@
                 <th class="text-right">Amount</th>
               </tr>
             </thead>
-
             <tbody>
               <% @statement.expense_transactions.each do |transaction| %>
                 <tr>
@@ -123,10 +102,8 @@
                       <span><%= transaction.account.display_name %></span>
                     </div>
                   </td>
-
                   <td><%= transaction.description.presence || "-" %></td>
                   <td><%= transaction.account.code %></td>
-
                   <td class="text-right">
                     ₱ <%= number_with_precision(transaction.amount, precision: 2) %>
                   </td>
@@ -136,15 +113,12 @@
           </table>
         </div>
       </div>
-
     </div>
   </div>
-
   <!-- Signatories -->
   <div class="card bg-base-100 border border-base-300">
     <div class="card-body">
       <h2 class="card-title">Signatories</h2>
-
       <div class="grid gap-4 md:grid-cols-2">
         <div>
           <div class="label">Prepared By</div>
@@ -152,7 +126,6 @@
             <%= @statement.prepared_by.name %>
           </div>
         </div>
-
         <div>
           <div class="label">Approved By</div>
           <div class="font-medium">
@@ -162,12 +135,10 @@
       </div>
     </div>
   </div>
-
   <!-- Status -->
   <div class="card bg-base-100 border border-base-300">
     <div class="card-body">
       <h2 class="card-title">Status</h2>
-
       <% if @statement.is_finalized? %>
         <div class="alert">
           Finalized on
@@ -182,14 +153,12 @@
       <% end %>
     </div>
   </div>
-
   <div class="flex justify-end gap-2">
     <% unless @statement.is_finalized? %>
       <%= link_to "Edit",
         edit_statement_path(@statement),
         class: "btn btn-primary" %>
     <% end %>
-
     <%= link_to "Print", print_statement_path(@statement), class: "btn btn-outline" %>
     <%= link_to "Back", statements_path, class: "btn btn-outline" %>
   </div>

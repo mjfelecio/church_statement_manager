@@ -1,0 +1,12 @@
+<div class="w-full center-page mb-4 space-y-4">
+  <% if notice.present? %>
+    <div class="alert alert-soft alert-success text-green-500">
+      <span><%= notice %></span>
+    </div>
+  <% end %>
+  <% if alert.present? %>
+    <div class="alert alert-soft alert-error">
+      <span><%= alert %></span>
+    </div>
+  <% end %>
+</div>
