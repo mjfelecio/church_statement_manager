@@ -1,11 +1,11 @@
 class BackupsController < ApplicationController
-  def new
+  def show
   end
 
   def create
     file = params[:backup_file]
     unless file
-      redirect_to new_backup_path, alert: "Please select a backup file."
+      redirect_to backup_path, alert: "Please select a backup file."
       return
     end
 
@@ -13,15 +13,15 @@ class BackupsController < ApplicationController
     BackupService.validate(content)
     store_backup_for_restore(content)
 
-    redirect_to backup_path, notice: "Backup validated successfully."
+    redirect_to preview_backup_path, notice: "Backup validated successfully."
   rescue BackupService::ImportError, JSON::ParserError => e
-    redirect_to new_backup_path, alert: e.message
+    redirect_to backup_path, alert: e.message
   end
 
-  def show
+  def preview
     content = retrieve_backup_for_restore
     unless content
-      redirect_to new_backup_path, alert: "No backup data found. Please upload a backup file."
+      redirect_to backup_path, alert: "No backup data found. Please upload a backup file."
       return
     end
     @backup_data = JSON.parse(content)
@@ -30,7 +30,7 @@ class BackupsController < ApplicationController
   def confirm
     content = retrieve_backup_for_restore
     unless content
-      redirect_to new_backup_path, alert: "No backup data found. Please upload a backup file again."
+      redirect_to backup_path, alert: "No backup data found. Please upload a backup file again."
       return
     end
 
@@ -39,7 +39,7 @@ class BackupsController < ApplicationController
     redirect_to root_path, notice: "Backup restored successfully."
   rescue BackupService::ImportError => e
     clear_stored_backup!
-    redirect_to new_backup_path, alert: "Restore failed: #{e.message}"
+    redirect_to backup_path, alert: "Restore failed: #{e.message}"
   end
 
   def download

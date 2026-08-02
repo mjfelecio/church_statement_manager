@@ -1,0 +1,74 @@
+<div class="w-full max-w-2xl mx-auto">
+  <h1 class="text-2xl font-bold mb-6">Confirm Restore</h1>
+
+  <div class="alert alert-error mb-6">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-alert-triangle">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 9v4" />
+      <path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0" />
+      <path d="M12 16h.01" />
+    </svg>
+    <span>
+      <strong>Warning:</strong> Restoring a backup will permanently replace all existing data. This action cannot be undone.
+    </span>
+  </div>
+
+  <div class="card bg-base-100 border border-base-300 mb-6">
+    <div class="card-body">
+      <h2 class="card-title">Backup Summary</h2>
+
+      <dl class="divide-y">
+        <div class="flex justify-between py-3">
+          <dt class="font-medium">Backup Version</dt>
+          <dd><%= @backup_data["version"] %></dd>
+        </div>
+        <div class="flex justify-between py-3">
+          <dt class="font-medium">Application Version</dt>
+          <dd><%= @backup_data["app_version"] %></dd>
+        </div>
+        <div class="flex justify-between py-3">
+          <dt class="font-medium">Rails Version</dt>
+          <dd><%= @backup_data["rails_version"] %></dd>
+        </div>
+        <div class="flex justify-between py-3">
+          <dt class="font-medium">Exported At</dt>
+          <dd><%= @backup_data["exported_at"] %></dd>
+        </div>
+      </dl>
+
+      <div class="divider"></div>
+
+      <h3 class="font-semibold mb-2">Records to be restored</h3>
+      <dl class="divide-y">
+        <div class="flex justify-between py-2">
+          <dt>People</dt>
+          <dd class="font-mono"><%= @backup_data["data"]["people"].length %></dd>
+        </div>
+        <div class="flex justify-between py-2">
+          <dt>Accounts</dt>
+          <dd class="font-mono"><%= @backup_data["data"]["accounts"].length %></dd>
+        </div>
+        <div class="flex justify-between py-2">
+          <dt>Statements</dt>
+          <dd class="font-mono"><%= @backup_data["data"]["statements"].length %></dd>
+        </div>
+        <div class="flex justify-between py-2">
+          <dt>Transactions</dt>
+          <dd class="font-mono"><%= @backup_data["data"]["transactions"].length %></dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+
+  <div class="flex justify-end gap-2">
+    <%= link_to "Cancel", backup_path, class: "btn btn-ghost" %>
+
+    <%= button_to "Confirm Restore",
+      confirm_backup_path,
+      method: :post,
+      data: {
+        turbo_confirm: "Are you absolutely sure? This will permanently delete all current data and replace it with the backup."
+      },
+      class: "btn btn-error" %>
+  </div>
+</div>

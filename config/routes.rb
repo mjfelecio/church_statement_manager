@@ -27,8 +27,9 @@ Rails.application.routes.draw do
     end
   end
 
-  resource :backup, only: [ :new, :create, :show ] do
+  resource :backup, only: [ :create, :show ] do
     get :download, on: :collection
+    get :preview, on: :collection
     post :confirm, on: :collection
     delete :reset, on: :collection
   end

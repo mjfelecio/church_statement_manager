@@ -1,6 +1,24 @@
 require 'rails_helper'
 
 RSpec.describe "Backups", type: :request do
+  describe "GET /backup" do
+    it "renders the manage data page" do
+      get backup_path
+
+      expect(response).to be_successful
+      expect(response.body).to include("Manage Data")
+    end
+  end
+
+  describe "GET /backup/preview" do
+    it "redirects to the manage data page when no backup is staged" do
+      get preview_backup_path
+
+      expect(response).to redirect_to(backup_path)
+      expect(flash[:alert]).to eq("No backup data found. Please upload a backup file.")
+    end
+  end
+
   describe "DELETE /backup/reset" do
     let(:prepared_by) { Person.create!(name: "Preparer", position: "Treasurer") }
     let(:approved_by) { Person.create!(name: "Approver", position: "Pastor") }

@@ -1,74 +1,81 @@
 <div class="w-full max-w-2xl mx-auto">
-  <h1 class="text-2xl font-bold mb-6">Confirm Restore</h1>
+  <h1 class="text-2xl font-bold mb-6">Manage Data</h1>
 
-  <div class="alert alert-error mb-6">
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-alert-triangle">
-      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-      <path d="M12 9v4" />
-      <path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0" />
-      <path d="M12 16h.01" />
-    </svg>
-    <span>
-      <strong>Warning:</strong> Restoring a backup will permanently replace all existing data. This action cannot be undone.
-    </span>
-  </div>
-
-  <div class="card bg-base-100 border border-base-300 mb-6">
-    <div class="card-body">
-      <h2 class="card-title">Backup Summary</h2>
-
-      <dl class="divide-y">
-        <div class="flex justify-between py-3">
-          <dt class="font-medium">Backup Version</dt>
-          <dd><%= @backup_data["version"] %></dd>
+  <div class="space-y-6">
+    <div class="card bg-base-100 border border-base-300">
+      <div class="card-body">
+        <h2 class="card-title">Restore Backup</h2>
+        <p class="text-sm text-base-content/70">
+          Restore a previously downloaded backup to replace all current application data.
+        </p>
+        <div class="alert alert-soft alert-warning border-warning mt-2">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-alert-triangle">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M12 9v4" />
+            <path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0" />
+            <path d="M12 16h.01" />
+          </svg>
+          <span>
+            Restoring a backup will permanently replace all existing data. This action cannot be undone.
+          </span>
         </div>
-        <div class="flex justify-between py-3">
-          <dt class="font-medium">Application Version</dt>
-          <dd><%= @backup_data["app_version"] %></dd>
-        </div>
-        <div class="flex justify-between py-3">
-          <dt class="font-medium">Rails Version</dt>
-          <dd><%= @backup_data["rails_version"] %></dd>
-        </div>
-        <div class="flex justify-between py-3">
-          <dt class="font-medium">Exported At</dt>
-          <dd><%= @backup_data["exported_at"] %></dd>
-        </div>
-      </dl>
-
-      <div class="divider"></div>
-
-      <h3 class="font-semibold mb-2">Records to be restored</h3>
-      <dl class="divide-y">
-        <div class="flex justify-between py-2">
-          <dt>People</dt>
-          <dd class="font-mono"><%= @backup_data["data"]["people"].length %></dd>
-        </div>
-        <div class="flex justify-between py-2">
-          <dt>Accounts</dt>
-          <dd class="font-mono"><%= @backup_data["data"]["accounts"].length %></dd>
-        </div>
-        <div class="flex justify-between py-2">
-          <dt>Statements</dt>
-          <dd class="font-mono"><%= @backup_data["data"]["statements"].length %></dd>
-        </div>
-        <div class="flex justify-between py-2">
-          <dt>Transactions</dt>
-          <dd class="font-mono"><%= @backup_data["data"]["transactions"].length %></dd>
-        </div>
-      </dl>
+        <%= form_with(url: backup_path, local: true, multipart: true, class: "contents") do |form| %>
+          <div class="form-control mt-4">
+            <%= form.label :backup_file, "Select Backup File", class: "label" %>
+            <%= form.file_field :backup_file,
+              accept: ".json",
+              required: true,
+              class: "file-input file-input-bordered w-full" %>
+          </div>
+          <div class="card-actions justify-end mt-6">
+            <%= form.submit "Upload & Validate",
+              class: "btn btn-warning" %>
+          </div>
+        <% end %>
+      </div>
     </div>
-  </div>
 
-  <div class="flex justify-end gap-2">
-    <%= link_to "Cancel", new_backup_path, class: "btn btn-ghost" %>
+    <div class="card bg-base-100 border border-base-300">
+      <div class="card-body">
+        <h2 class="card-title">Download Backup</h2>
+        <p class="text-sm text-base-content/70">
+          Download a complete backup of all application data as a JSON file.
+        </p>
+        <div class="card-actions justify-end mt-2">
+          <%= link_to "Download Backup",
+            download_backup_path,
+            data: { turbo: false },
+            class: "btn btn-primary" %>
+        </div>
+      </div>
+    </div>
 
-    <%= button_to "Confirm Restore",
-      confirm_backup_path,
-      method: :post,
-      data: {
-        turbo_confirm: "Are you absolutely sure? This will permanently delete all current data and replace it with the backup."
-      },
-      class: "btn btn-error" %>
+    <div class="divider divider-error text-error-content font-bold">DANGER ZONE</div>
+    <div class="card card-border border-error bg-error/5">
+      <div class="card-body">
+        <h2 class="card-title text-error">Reset Data</h2>
+        <p class="text-sm text-base-content/70">
+          Reset the application data back to its initial state. This action cannot
+          be undone, so make sure to download a backup first.
+        </p>
+        <div class="card-actions justify-end gap-2 mt-2">
+          <%= button_to "Reset Statements",
+            reset_backup_path,
+            method: :delete,
+            params: { only_statements: true },
+            data: {
+              turbo_confirm: "This will delete all statements and transactions. Proceed?"
+            },
+            class: "btn btn-error btn-soft" %>
+          <%= button_to "Reset Data",
+            reset_backup_path,
+            method: :delete,
+            data: {
+              turbo_confirm: "This will permanently delete ALL data, including people and accounts. Proceed?"
+            },
+            class: "btn btn-error" %>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
