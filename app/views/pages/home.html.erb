@@ -3,7 +3,6 @@
     <h1 class="text-3xl font-bold"><%= Statement::CHAPEL_NAME %></h1>
     <p class="text-base-content/70 mt-1">Chapel Ledger &mdash; Financial Statement Dashboard</p>
   </div>
-
   <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
     <div class="stat border border-base-300 rounded-box">
       <div class="stat-title">Accounts</div>
@@ -31,7 +30,6 @@
       </div>
     </div>
   </div>
-
   <% if @latest_statement %>
     <div class="card bg-base-100 border border-base-300">
       <div class="card-body">
@@ -46,7 +44,6 @@
             <%= @latest_statement.is_finalized? ? "Finalized" : "Draft" %>
           </div>
         </div>
-
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
           <div>
             <div class="text-xs uppercase text-base-content/60">Beginning Balance</div>
@@ -65,7 +62,6 @@
             <div class="text-lg font-semibold">₱<%= number_with_precision(@latest_statement.ending_balance, precision: 2, delimiter: ",") %></div>
           </div>
         </div>
-
         <div class="card-actions justify-end mt-4">
           <%= link_to "View Statement", @latest_statement, class: "btn btn-soft btn-primary" %>
           <%= link_to "Print", print_statement_path(@latest_statement), class: "btn btn-ghost" %>
@@ -73,16 +69,14 @@
       </div>
     </div>
   <% end %>
-
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
     <div class="card bg-base-100 border border-base-300">
       <div class="card-body">
         <h2 class="card-title">Recent Statements</h2>
-
         <% if @recent_statements.any? %>
           <div class="divide-y">
             <% @recent_statements.each do |statement| %>
-              <%= link_to statement, class: "flex items-center justify-between py-3 hover:bg-base-200 -mx-4 px-4 rounded-box transition-colors" do %>
+              <%= link_to statement, class: "flex items-center justify-between py-3 hover:bg-base-200 px-4 transition-colors" do %>
                 <div>
                   <span class="font-medium"><%= statement.month.humanize %> <%= statement.year %></span>
                   <div class="text-xs text-base-content/60">
@@ -98,7 +92,6 @@
               <% end %>
             <% end %>
           </div>
-
           <div class="card-actions justify-end mt-2">
             <%= link_to "View All Statements", statements_path, class: "btn btn-ghost btn-sm" %>
           </div>
@@ -107,11 +100,9 @@
         <% end %>
       </div>
     </div>
-
     <div class="card bg-base-100 border border-base-300">
       <div class="card-body">
         <h2 class="card-title">Quick Actions</h2>
-
         <div class="flex flex-col gap-3 mt-2">
           <%= link_to new_statement_path, class: "btn btn-primary" do %>
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-plus">
@@ -133,9 +124,7 @@
             Manage Statements
           <% end %>
         </div>
-
         <div class="divider"></div>
-
         <h3 class="font-semibold text-sm">Administration</h3>
         <div class="flex flex-col gap-2 mt-2">
           <%= link_to accounts_path, class: "btn btn-ghost btn-sm justify-start" do %>
