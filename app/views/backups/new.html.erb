@@ -48,4 +48,31 @@
       </div>
     </div>
   </div>
+  <div class="divider divider-error text-error-content font-bold">DANGER ZONE</div>
+  <div class="card card-border border-error bg-error/5">
+    <div class="card-body">
+      <h2 class="card-title text-error">Reset Data</h2>
+      <p class="text-sm text-base-content/70">
+        Reset the application data back to its initial state. This action cannot
+        be undone, so make sure to download a backup first.
+      </p>
+      <div class="card-actions justify-end gap-2 mt-2">
+        <%= button_to "Reset Statements",
+          reset_backup_path,
+          method: :delete,
+          params: { only_statements: true },
+          data: {
+            turbo_confirm: "This will delete all statements and transactions. Proceed?"
+          },
+          class: "btn btn-error btn-soft" %>
+        <%= button_to "Reset Data",
+          reset_backup_path,
+          method: :delete,
+          data: {
+            turbo_confirm: "This will permanently delete ALL data, including people and accounts. Proceed?"
+          },
+          class: "btn btn-error" %>
+      </div>
+    </div>
+  </div>
 </div>

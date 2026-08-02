@@ -49,6 +49,19 @@ class BackupsController < ApplicationController
       type: "application/json"
   end
 
+  def reset
+    only_statements = params[:only_statements] == "true"
+    BackupService.reset!(only_statements: only_statements)
+
+    notice = if only_statements
+      "Statements and transactions have been reset."
+    else
+      "All data has been reset."
+    end
+
+    redirect_to root_path, notice: notice
+  end
+
   private
 
   def store_backup_for_restore(content)

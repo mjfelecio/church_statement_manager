@@ -53,6 +53,17 @@ class BackupService
     raise ImportError, "Unexpected error: #{e.message}"
   end
 
+  def self.reset!(only_statements: false)
+    ApplicationRecord.transaction do
+      if only_statements
+        Transaction.delete_all
+        Statement.delete_all
+      else
+        clear_existing_data!
+      end
+    end
+  end
+
   private
 
   def self.export_people

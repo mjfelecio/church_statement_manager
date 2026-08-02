@@ -30,5 +30,6 @@ Rails.application.routes.draw do
   resource :backup, only: [ :new, :create, :show ] do
     get :download, on: :collection
     post :confirm, on: :collection
+    delete :reset, on: :collection
   end
 end
