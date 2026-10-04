@@ -6,6 +6,6 @@
   </div>
   <div class="divider"></div>
   <div id="statements" class="space-y-3">
-    <%= render @statements %>
+    <%= render @statements.order(year: :desc, month: :desc) %>
   </div>
 </div>
