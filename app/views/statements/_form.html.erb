@@ -1,8 +1,7 @@
 <%= form_with(model: statement, class: "contents", data: { 
   controller: "statement", 
   statement_target: "form",
-  statement_statement_month_value: statement.month,
-  statement_is_finalized_value: statement.is_finalized?
+  statement_statement_month_value: statement.month
 }) do |form| %>
   <% if statement.errors.any? %>
     <div class="alert alert-error mb-6">

@@ -118,7 +118,4 @@ export default class extends Controller {
     await this.refreshBeginningBalance();
     this.recalculateBalance();
   }
-
-  disconnect() {
-  }
 }
