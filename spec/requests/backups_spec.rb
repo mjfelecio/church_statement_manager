@@ -38,7 +38,6 @@ RSpec.describe "Backups", type: :request do
       Transaction.create!(
         statement: statement,
         account: account,
-        description: "Offering",
         amount: 100
       )
     end

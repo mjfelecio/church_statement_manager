@@ -10,48 +10,47 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_06_16_003608) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_04_101824) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
   create_table "accounts", force: :cascade do |t|
-    t.string "code"
-    t.string "name"
-    t.string "group"
-    t.text "description"
     t.integer "category"
+    t.string "code"
     t.datetime "created_at", null: false
+    t.text "description"
+    t.string "group"
+    t.string "name"
     t.datetime "updated_at", null: false
     t.index ["code"], name: "index_accounts_on_code", unique: true
   end
 
   create_table "people", force: :cascade do |t|
+    t.datetime "created_at", null: false
     t.string "name"
     t.string "position"
-    t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "statements", force: :cascade do |t|
-    t.integer "month"
-    t.integer "year"
-    t.decimal "initial_balance"
-    t.bigint "prepared_by_id", null: false
     t.bigint "approved_by_id", null: false
-    t.datetime "finalized_at"
     t.datetime "created_at", null: false
+    t.datetime "finalized_at"
+    t.decimal "initial_balance"
+    t.integer "month"
+    t.bigint "prepared_by_id", null: false
     t.datetime "updated_at", null: false
+    t.integer "year"
     t.index ["approved_by_id"], name: "index_statements_on_approved_by_id"
     t.index ["prepared_by_id"], name: "index_statements_on_prepared_by_id"
   end
 
   create_table "transactions", force: :cascade do |t|
-    t.bigint "statement_id", null: false
-    t.string "description"
+    t.bigint "account_id", null: false
     t.decimal "amount"
     t.datetime "created_at", null: false
+    t.bigint "statement_id", null: false
     t.datetime "updated_at", null: false
-    t.bigint "account_id", null: false
     t.index ["account_id"], name: "index_transactions_on_account_id"
     t.index ["statement_id"], name: "index_transactions_on_statement_id"
   end
