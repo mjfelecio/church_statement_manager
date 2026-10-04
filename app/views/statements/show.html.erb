@@ -54,7 +54,6 @@
             <thead>
               <tr>
                 <th>Account</th>
-                <th>Description</th>
                 <th>Code</th>
                 <th class="text-right">Amount</th>
               </tr>
@@ -67,7 +66,6 @@
                       <span><%= transaction.account.display_name %></span>
                     </div>
                   </td>
-                  <td><%= transaction.description.presence || "-" %></td>
                   <td><%= transaction.account.code %></td>
                   <td class="text-right">
                     ₱ <%= number_with_precision(transaction.amount, precision: 2) %>
@@ -89,7 +87,6 @@
             <thead>
               <tr>
                 <th>Account</th>
-                <th>Description</th>
                 <th>Code</th>
                 <th class="text-right">Amount</th>
               </tr>
@@ -102,7 +99,6 @@
                       <span><%= transaction.account.display_name %></span>
                     </div>
                   </td>
-                  <td><%= transaction.description.presence || "-" %></td>
                   <td><%= transaction.account.code %></td>
                   <td class="text-right">
                     ₱ <%= number_with_precision(transaction.amount, precision: 2) %>

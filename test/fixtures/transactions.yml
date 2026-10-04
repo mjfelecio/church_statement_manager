@@ -3,12 +3,9 @@
 one:
   statement: one
   account: one
-  description: MyString
-  group_name: MyString
   amount: 9.99
 
 two:
   statement: two
   account: two
-  group_name: MyString
   amount: 9.99

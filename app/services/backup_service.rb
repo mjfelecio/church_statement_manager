@@ -105,7 +105,6 @@ class BackupService
         "account_code" => t.account.code,
         "statement_month" => t.statement.month,
         "statement_year" => t.statement.year,
-        "description" => t.description,
         "amount" => t.amount.to_s,
         "created_at" => t.created_at.iso8601,
         "updated_at" => t.updated_at.iso8601
@@ -205,7 +204,6 @@ class BackupService
       Transaction.create!(
         account: account,
         statement: statement,
-        description: attrs["description"],
         amount: attrs["amount"],
         created_at: attrs["created_at"],
         updated_at: attrs["updated_at"]
