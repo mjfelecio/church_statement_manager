@@ -65,6 +65,6 @@ class AccountsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def account_params
-      params.expect(account: [ :code, :name, :description, :category ])
+      params.expect(account: [ :code, :name, :group, :description, :category ])
     end
 end

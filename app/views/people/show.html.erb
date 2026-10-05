@@ -1,8 +1,37 @@
-<% content_for :title, "Showing person" %>
-<div class="md:w-2/3 w-full center-page">
-  <h1 class="font-bold text-4xl">Showing person</h1>
-  <%= render @person %>
-  <%= link_to "Edit this person", edit_person_path(@person), class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-  <%= link_to "Back to people", people_path, class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-  <%= button_to "Destroy this person", @person, method: :delete, form_class: "sm:inline-block mt-2 sm:mt-0 sm:ml-2", class: "w-full rounded-md px-3.5 py-2.5 text-white bg-red-600 hover:bg-red-500 font-medium cursor-pointer", data: { turbo_confirm: "Are you sure?" } %>
+<% content_for :title, @person.name %>
+
+<div class="md:w-2/3 space-y-6 w-full center-page">
+  <!-- Person Details -->
+  <div class="card bg-base-100 border border-base-300">
+    <div class="card-body">
+      <h2 class="card-title">Person Details</h2>
+      <div class="grid gap-4 md:grid-cols-2">
+        <div>
+          <div class="label">Name</div>
+          <div class="font-medium"><%= @person.name %></div>
+        </div>
+        <div>
+          <div class="label">Position</div>
+          <div class="font-medium"><%= @person.position %></div>
+        </div>
+        <div>
+          <div class="label">Statements Prepared</div>
+          <div class="text-xl font-medium"><%= @person.prepared_statements.count %></div>
+        </div>
+        <div>
+          <div class="label">Statements Approved</div>
+          <div class="text-xl font-medium"><%= @person.approved_statements.count %></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="flex justify-end gap-2">
+    <%= link_to "Edit", edit_person_path(@person), class: "btn btn-primary" %>
+    <%= link_to "Back", people_path, class: "btn btn-outline" %>
+    <%= button_to "Delete",
+      @person,
+      method: :delete,
+      class: "btn btn-error",
+      data: { turbo_confirm: "Delete #{@person.name}?" } %>
+  </div>
 </div>

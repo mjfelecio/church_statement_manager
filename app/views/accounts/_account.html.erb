@@ -1,21 +1,26 @@
-<div id="<%= dom_id account %>" class="py-4">
-  <div class="flex items-center justify-between gap-4">
-    <div class="flex gap-2 shrink-0">
-      <div class="badge badge-outline">
-        <%= account.code %>
-      </div>
+<tr id="<%= dom_id account %>">
+  <td>
+    <span class="font-mono"><%= account.code %></span>
+  </td>
+  <td>
+    <%= link_to account.name, account_path(account), class: "link link-hover font-medium" %>
+  </td>
+  <td>
+    <% if account.group.present? %>
+      <%= account.group %>
+    <% else %>
+      <span class="text-base-content/40">—</span>
+    <% end %>
+  </td>
+  <td>
+    <div class="flex justify-end gap-1">
+      <%= link_to "Edit", edit_account_path(account), class: "btn btn-sm btn-ghost" %>
+      <%= button_to "Delete",
+        account,
+        method: :delete,
+        form_class: "inline",
+        class: "btn btn-sm btn-ghost text-error",
+        data: { turbo_confirm: "Delete account #{account.code}?" } %>
     </div>
-
-    <div class="flex gap-1">
-      <% if account.group.present? %>
-        <h3 class="text-lg font-semibold">
-          [<%= account.group %>]
-        </h3>
-      <% end %>
-
-      <h3 class="text-lg font-semibold">
-        <%= account.name %>
-      </h3>
-    </div>
-  </div>
-</div>
+  </td>
+</tr>

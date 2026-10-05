@@ -1,8 +1,49 @@
-<% content_for :title, "Showing account" %>
-<div class="md:w-2/3 w-full center-page">
-  <h1 class="font-bold text-4xl">Showing account</h1>
-  <%= render @account %>
-  <%= link_to "Edit this account", edit_account_path(@account), class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-  <%= link_to "Back to accounts", accounts_path, class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-  <%= button_to "Destroy this account", @account, method: :delete, form_class: "sm:inline-block mt-2 sm:mt-0 sm:ml-2", class: "w-full rounded-md px-3.5 py-2.5 text-white bg-red-600 hover:bg-red-500 font-medium cursor-pointer", data: { turbo_confirm: "Are you sure?" } %>
+<% content_for :title, @account.coded_display_name %>
+
+<div class="md:w-2/3 space-y-6 w-full center-page">
+  <!-- Account Details -->
+  <div class="card bg-base-100 border border-base-300">
+    <div class="card-body">
+      <h2 class="card-title">Account Details</h2>
+      <div class="grid gap-4 md:grid-cols-2">
+        <div>
+          <div class="label">Code</div>
+          <div class="font-mono font-medium"><%= @account.code %></div>
+        </div>
+        <div>
+          <div class="label">Category</div>
+          <div>
+            <span class="badge <%= badge_variant(@account.category) %> badge-sm">
+              <%= @account.category.humanize %>
+            </span>
+          </div>
+        </div>
+        <div>
+          <div class="label">Name</div>
+          <div class="font-medium"><%= @account.name %></div>
+        </div>
+        <div>
+          <div class="label">Group</div>
+          <div class="font-medium">
+            <%= @account.group.presence || "—" %>
+          </div>
+        </div>
+      </div>
+      <% if @account.description.present? %>
+        <div class="mt-4">
+          <div class="label">Description</div>
+          <div><%= @account.description %></div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <div class="flex justify-end gap-2">
+    <%= link_to "Edit", edit_account_path(@account), class: "btn btn-primary" %>
+    <%= link_to "Back", accounts_path, class: "btn btn-outline" %>
+    <%= button_to "Delete",
+      @account,
+      method: :delete,
+      class: "btn btn-error",
+      data: { turbo_confirm: "Delete account #{@account.code}?" } %>
+  </div>
 </div>
