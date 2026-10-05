@@ -12,4 +12,8 @@ class Account < ApplicationRecord
   def display_name
     group.present? ? "[#{group}] #{name}" : name
   end
+
+  def coded_display_name
+    "(#{code}) #{display_name}"
+  end
 end

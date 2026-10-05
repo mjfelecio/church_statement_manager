@@ -21,6 +21,32 @@ export default class extends Controller {
     const content = template.innerHTML.replaceAll("NEW_RECORD", Date.now());
 
     container.insertAdjacentHTML("beforeend", content);
+    this.syncCode(container.lastElementChild);
+  }
+
+  updateCode(event) {
+    const row = event.target.closest("[data-transaction-row]");
+    this.syncCode(row);
+  }
+
+  syncAllCodes() {
+    this.element
+      .querySelectorAll("[data-transaction-row]")
+      .forEach((row) => this.syncCode(row));
+  }
+
+  syncCode(row) {
+    if (!row) return;
+    const select = row.querySelector("select");
+    const display = row.querySelector("[data-account-code]");
+    if (!select || !display) return;
+    const text = select.selectedOptions[0]?.textContent || "";
+    const match = text.match(/\(([^)]+)\)/);
+    display.textContent = match ? match[1] : "";
+  }
+
+  connect() {
+    this.syncAllCodes();
   }
 
   deleteRow(event) {

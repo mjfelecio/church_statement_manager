@@ -1,10 +1,17 @@
 <div id="transaction-<%= f.object.id %>" data-transaction-row class="grid grid-cols-9 gap-2 py-1 items-start">
-  <div class="col-span-5">
+  <div class="col-span-1 flex items-center min-h-10">
+    <span data-account-code class="font-mono text-sm"><%= f.object.account&.code %></span>
+  </div>
+
+  <div class="col-span-4">
     <%= f.select :account_id,
       account_options(f.object.account_id, category),
       { },
       class: "select select-bordered w-full",
-      data: { transaction_id: f.object.id } %>
+      data: {
+        transaction_id: f.object.id,
+        action: "change->transactions#updateCode"
+      } %>
   </div>
 
   <div class="col-span-3">

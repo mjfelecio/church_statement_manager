@@ -28,9 +28,9 @@ module StatementsHelper
 
   def account_options(account_id, category)
     options_from_collection_for_select(
-      Account.where(category: category).order(:name),
+      Account.where(category: category).order(:code),
       :id,
-      :display_name,
+      :coded_display_name,
       account_id
     )
   end
