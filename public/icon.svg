@@ -1,3 +1,18 @@
-<svg width="512" height="512" xmlns="http://www.w3.org/2000/svg">
-  <circle cx="256" cy="256" r="256" fill="red"/>
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <rect width="512" height="512" rx="112" fill="#14532d"/>
+  <g transform="translate(64,64) scale(16)" fill="none" stroke="#f5f0e1" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+    <!-- cross -->
+    <path d="M12 2v3.5"/>
+    <path d="M10.6 3.2h2.8"/>
+    <!-- chapel roof -->
+    <path d="M3.5 10.5L12 5l8.5 5.5"/>
+    <!-- chapel walls -->
+    <path d="M5.5 9v11h13V9"/>
+    <!-- ledger entries -->
+    <path d="M9 13h6"/>
+    <path d="M9 15.5h6"/>
+    <!-- ledger total (double rule) -->
+    <path d="M9 18h6"/>
+    <path d="M9 19.3h6"/>
+  </g>
 </svg>

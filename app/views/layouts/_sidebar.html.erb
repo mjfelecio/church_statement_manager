@@ -17,7 +17,8 @@
         <label
           for="sidebar"
           aria-label="Toggle Sidebar"
-          class="list-row flex items-center gap-3 rounded-md p-4 hover:bg-base-300 cursor-pointer"
+          data-tip="Open sidebar"
+          class="list-row flex items-center gap-3 rounded-md p-4 hover:bg-base-300 cursor-pointer is-drawer-close:tooltip is-drawer-close:tooltip-right"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -25,13 +26,24 @@
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
           >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M4 6h16M4 12h16M4 18h16"
-            />
+            <!-- cross -->
+            <path d="M12 2v3.5" />
+            <path d="M10.6 3.2h2.8" />
+            <!-- chapel roof -->
+            <path d="M3.5 10.5L12 5l8.5 5.5" />
+            <!-- chapel walls -->
+            <path d="M5.5 9v11h13V9" />
+            <!-- ledger entries -->
+            <path d="M9 13h6" />
+            <path d="M9 15.5h6" />
+            <!-- ledger total (double rule) -->
+            <path d="M9 18h6" />
+            <path d="M9 19.3h6" />
           </svg>
 
           <div class="is-drawer-close:hidden">
