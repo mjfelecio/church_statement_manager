@@ -113,6 +113,7 @@
 
         <div data-controller="transactions">
           <% ordered_transactions = statement.transactions.includes(:account).sort_by { |t| t.account&.code.to_s } %>
+          <% used_account_ids = ordered_transactions.reject(&:marked_for_destruction?).filter_map(&:account_id) %>
 
           <!-- ========================= -->
           <!-- Income -->
@@ -141,7 +142,7 @@
               <div data-transactions-target="incomeRows">
                 <%= form.fields_for :transactions, ordered_transactions do |transaction_form| %>
                   <% if transaction_form.object.account&.income? || transaction_form.object.new_record? %>
-                    <%= render "statements/transaction_row", f: transaction_form, category: :income %>
+                    <%= render "statements/transaction_row", f: transaction_form, category: :income, disabled_ids: used_account_ids %>
                   <% end %>
                 <% end %>
               </div>
@@ -177,7 +178,7 @@
               <div data-transactions-target="expenseRows">
                 <%= form.fields_for :transactions, ordered_transactions do |transaction_form| %>
                   <% if transaction_form.object.account&.expense? %>
-                    <%= render "statements/transaction_row", f: transaction_form, category: :expense %>
+                    <%= render "statements/transaction_row", f: transaction_form, category: :expense, disabled_ids: used_account_ids %>
                   <% end %>
                 <% end %>
               </div>
@@ -187,13 +188,13 @@
           <!-- Templates -->
           <template data-transactions-target="incomeTemplate">
             <%= form.fields_for :transactions, Transaction.new, child_index: "NEW_RECORD" do |f| %>
-              <%= render "statements/transaction_row", f: f, category: :income %>
+              <%= render "statements/transaction_row", f: f, category: :income, disabled_ids: used_account_ids %>
             <% end %>
           </template>
 
           <template data-transactions-target="expenseTemplate">
             <%= form.fields_for :transactions, Transaction.new, child_index: "NEW_RECORD" do |f| %>
-              <%= render "statements/transaction_row", f: f, category: :expense %>
+              <%= render "statements/transaction_row", f: f, category: :expense, disabled_ids: used_account_ids %>
             <% end %>
           </template>
 

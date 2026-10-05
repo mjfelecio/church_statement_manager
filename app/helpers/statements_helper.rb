@@ -26,13 +26,13 @@ module StatementsHelper
     )
   end
 
-  def account_options(account_id, category)
-    options_from_collection_for_select(
-      Account.where(category: category).order(:code),
-      :id,
-      :coded_display_name,
-      account_id
-    )
+  def account_options(account_id, category, disabled_ids: [])
+    options = Account.where(category: category).order(:code).map do |account|
+      disabled = disabled_ids.include?(account.id) && account.id != account_id
+      [ account.coded_display_name, account.id, { disabled: disabled } ]
+    end
+
+    options_for_select(options, account_id)
   end
 
   def last_day_of_month_of_statement(statement)

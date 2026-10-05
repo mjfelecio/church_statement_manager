@@ -44,6 +44,7 @@ class Statement < ApplicationRecord
   validate :prepared_and_approved_by_must_differ
   validate :cannot_be_edited_when_finalized, on: [ :update, :destroy ]
   validate :only_one_initial_balance
+  validate :transactions_must_have_unique_accounts
 
   def display_name
     "#{self.year}-#{self.month.titlecase}-Financial-Statement"
@@ -140,5 +141,21 @@ class Statement < ApplicationRecord
     return if initial_balance_statement == self
 
     errors.add(:base, "Only one initial balance is allowed.")
+  end
+
+  def transactions_must_have_unique_accounts
+    active_account_ids = transactions
+      .reject(&:marked_for_destruction?)
+      .filter_map(&:account_id)
+
+    duplicate_ids = active_account_ids
+      .tally
+      .select { |_, count| count > 1 }
+      .keys
+
+    return if duplicate_ids.empty?
+
+    duplicate_codes = Account.where(id: duplicate_ids).pluck(:code)
+    errors.add(:base, "Duplicate accounts are not allowed: #{duplicate_codes.join(", ")}")
   end
 end

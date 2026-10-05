@@ -22,11 +22,41 @@ export default class extends Controller {
 
     container.insertAdjacentHTML("beforeend", content);
     this.syncCode(container.lastElementChild);
+    this.syncDisabledOptions();
   }
 
   updateCode(event) {
     const row = event.target.closest("[data-transaction-row]");
     this.syncCode(row);
+  }
+
+  visibleRows() {
+    return [...this.element.querySelectorAll("[data-transaction-row]")].filter(
+      (row) => {
+        const destroyField = row.querySelector("[name*='_destroy']");
+        return !destroyField || destroyField.value !== "1";
+      },
+    );
+  }
+
+  syncDisabledOptions() {
+    const selects = this.visibleRows()
+      .map((row) => row.querySelector("select"))
+      .filter(Boolean);
+    const used = new Set(
+      selects.map((select) => select.value).filter((value) => value !== ""),
+    );
+
+    selects.forEach((select) => {
+      const ownValue = select.value;
+      select.querySelectorAll("option").forEach((option) => {
+        if (option.value === "" || option.value === ownValue) {
+          option.disabled = false;
+        } else {
+          option.disabled = used.has(option.value);
+        }
+      });
+    });
   }
 
   syncAllCodes() {
@@ -47,6 +77,7 @@ export default class extends Controller {
 
   connect() {
     this.syncAllCodes();
+    this.syncDisabledOptions();
   }
 
   deleteRow(event) {
@@ -68,6 +99,7 @@ export default class extends Controller {
       row.remove();
     }
 
+    this.syncDisabledOptions();
     this.element.dispatchEvent(new Event("change", { bubbles: true }));
   }
 }

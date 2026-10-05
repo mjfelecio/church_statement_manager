@@ -5,12 +5,16 @@
 
   <div class="col-span-4">
     <%= f.select :account_id,
-      account_options(f.object.account_id, category),
-      { },
+      account_options(
+        f.object.account_id,
+        category,
+        disabled_ids: local_assigns.fetch(:disabled_ids, [])
+      ),
+      { prompt: "Select account" },
       class: "select select-bordered w-full",
       data: {
         transaction_id: f.object.id,
-        action: "change->transactions#updateCode"
+        action: "change->transactions#updateCode change->transactions#syncDisabledOptions"
       } %>
   </div>
 

@@ -8,6 +8,13 @@ class Transaction < ApplicationRecord
       greater_than_or_equal_to: 0
     }
 
+  validates :account_id,
+    uniqueness: {
+      scope: :statement_id,
+      message: "has already been taken for this statement"
+    },
+    if: -> { account_id.present? }
+
   validate :cannot_be_edited_when_finalized, on: [ :update, :destroy ]
 
   def cannot_be_edited_when_finalized
