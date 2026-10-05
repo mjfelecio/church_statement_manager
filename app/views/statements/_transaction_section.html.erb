@@ -1,4 +1,6 @@
-<% last_transaction = transactions.last %>
+<% ordered_transactions = transactions.sort_by { |t| t.account&.code.to_s } %>
+<% grouped_transactions_by_name = ordered_transactions.group_by(&:group_name).sort_by { |group_name, _| group_name.present? ? 1 : 0 } %>
+<% last_transaction = grouped_transactions_by_name.last&.last&.last %>
 
 <table class="w-full">
   <colgroup>
@@ -8,9 +10,7 @@
     <col class="w-24">
   </colgroup>
 
-  <% transactions
-    .group_by(&:group_name)
-    .sort_by { |group_name, _| group_name.present? ? 1 : 0 }
+  <% grouped_transactions_by_name
     .each do |group_name, grouped_transactions| %>
 
     <% if group_name.present? %>

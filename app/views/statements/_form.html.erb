@@ -112,6 +112,7 @@
         <h2 class="card-title">Transactions</h2>
 
         <div data-controller="transactions">
+          <% ordered_transactions = statement.transactions.includes(:account).sort_by { |t| t.account&.code.to_s } %>
 
           <!-- ========================= -->
           <!-- Income -->
@@ -137,7 +138,7 @@
               </div>
 
               <div data-transactions-target="incomeRows">
-                <%= form.fields_for :transactions do |transaction_form| %>
+                <%= form.fields_for :transactions, ordered_transactions do |transaction_form| %>
                   <% if transaction_form.object.account&.income? || transaction_form.object.new_record? %>
                     <%= render "statements/transaction_row", f: transaction_form, category: :income %>
                   <% end %>
@@ -172,7 +173,7 @@
               </div>
 
               <div data-transactions-target="expenseRows">
-                <%= form.fields_for :transactions do |transaction_form| %>
+                <%= form.fields_for :transactions, ordered_transactions do |transaction_form| %>
                   <% if transaction_form.object.account&.expense? %>
                     <%= render "statements/transaction_row", f: transaction_form, category: :expense %>
                   <% end %>

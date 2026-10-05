@@ -67,11 +67,11 @@ class Statement < ApplicationRecord
   end
 
   def income_transactions
-    transactions.joins(:account).where(account: { category: :income })
+    transactions.joins(:account).where(account: { category: :income }).order(account: { code: :asc })
   end
 
   def expense_transactions
-    transactions.joins(:account).where(account: { category: :expense })
+    transactions.joins(:account).where(account: { category: :expense }).order(account: { code: :asc })
   end
 
   def total_income
